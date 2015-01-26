@@ -1,0 +1,558 @@
+014H09-A-SD-P15
+055B07-P-DI-P58
+059A02-A-SD-P93
+062DZ93 hypersaline microbial mat group
+070125-BRIC7-5
+101-154
+1013-28-CG33
+10bav-F6
+113B434
+11B-2
+12-31
+196up
+19c-33
+20a-9
+34P16
+4-15
+4-Org1-14
+43F-1404R
+A714019
+AB3F14RM1B12
+AK4AB2-03B
+AK5
+AKIW781
+AKYG1722
+ANME-1
+AT-s3-28
+AT425-EubC11 terrestrial group
+Acanthopleuribacterales
+Acholeplasmatales
+Acidilobales
+Acidimicrobiales
+Acidithiobacillales
+Acidobacteriales
+Actinomycetales
+Actinopolysporales
+Acytostelium
+Adriatic90
+Aeromonadales
+Alteromonadales
+Amastigomonas
+Amaurochaete
+Amsterdam-1B-07
+Anaerolineales
+Anaeroplasmatales
+Ancyromonas
+Apal-E12
+Apicomplexa
+Apusomonas
+Aquificales
+Arcellinida
+Archaeoglobales
+Armatimonadales
+B01R017
+B1-7BS
+B10-SB3A
+B103G10
+B12-WMSP1
+B276-D12
+B38
+BC-COM435
+BC95F14RM4G06
+BD2-11 terrestrial group
+BD3-1
+BD7-8 marine group
+BD72BR169
+BF195
+BG.g7
+BOLA553
+BOLA914
+BP-U1C-1g10
+BR36
+BS1-0-74
+BS5
+BW-dinoclone28
+Bacillales
+Bacteroidales
+Badhamia
+Bangiales
+Bdellovibrionales
+Bicosoecida
+Bifidobacteriales
+Blastocystis
+Bolidomonas
+Brefeldia
+Breviata
+Brocadiales
+Burkholderiales
+C-2
+C0119
+C178B
+C2-E039
+C86
+CCI40
+CCM11a
+CCW35
+CCW8
+CH8-1-BAC
+CK-1C2-67
+CK-1C4-49
+CPla-3 termite group
+CS-B046
+CVer-1 termite group
+CVer-2 termite group
+CW-1 termite group
+Caldilineales
+Caldisericales
+Campylobacterales
+Cardiobacteriales
+Catenulisporales
+Caulobacterales
+Cenarchaeales
+Ceratiomyxella
+Cercozoa
+Charophyta
+Chlamydaster
+Chlamydiales
+Chlorobiales
+Chloroflexales
+Chlorophyta
+Choanocystis
+Choanomonada
+Chromatiales
+Chroomonas
+Chrysiogenales
+Chrysophyceae
+Chthoniobacterales
+Chthonomonadales
+Ciliophora
+Clostridiales
+Coccolithales
+Comatricha
+Compsopogonales
+Corallochytrea
+Coriobacteriales
+Corynebacteriales
+Cryptomonas
+Cyanidiales
+Cyanoptyche
+Cytophagales
+D-C06
+D8A-2
+DB1-14
+DEV055
+DMI
+DP7-4-61
+DSM 5130
+DTB120
+Deferribacterales
+Dehalococcoidales
+Deinococcales
+Desulfarculales
+Desulfobacterales
+Desulfovibrionales
+Desulfurellales
+Desulfurococcales
+Desulfuromonadales
+Diacronema
+Diatomea
+Dictyochophyceae
+Dictyoglomales
+Dictyostelium
+Diderma
+Didymium
+Dinoflagellata
+Diphylleia
+Discicristata
+Discicristoidea
+E01-9C-26 marine group
+E6aD10
+EC3
+EMP-G18
+ESS2202
+EUB33-2
+Echinamoebida
+Elev-16S-816
+Elev-16S-976
+Elusimicrobiales
+Entamoebida
+Enterobacteriales
+Entomoplasmatales
+Erysipelotrichales
+Euamoebida
+Eustigmatales
+Euzebyales
+Exanthemachrysis
+F01N5
+FCPU453
+FFCH11981
+FFCH5909
+FGL12-B44
+FS117-23B-02
+FV18-2D11
+FV18-2G7
+FW113
+FW22
+Fabomonas
+Falcomonas
+Fe-A-9
+Fervidicoccales
+Fibrobacterales
+Filamoeba
+Filasterea
+Flabellinia
+Flamella
+Flavobacteriales
+Florideophycidae
+Fornicata
+Frankiales
+Fuligo
+Fungi
+Fusobacteriales
+GBS-L1-B05
+GIF3
+GIF9
+GR-WP33-30
+GZKB75
+Gaiellales
+Geminigera
+Gemmatimonadales
+Glaucocystis
+Gloeochaete
+Glycomycetales
+Guillardia
+H2SRC138
+H67
+HOC36
+HTM1036S-A29
+Halanaerobiales
+Halobacteriales
+Haloplasmatales
+Hatena
+Hemiselmis
+Herpetosiphonales
+Heterophrys
+Holophagales
+Hot Creek 32
+Hydrogenophilales
+Hyphochytriales
+IC-BH
+Ichthyosporea
+Ignavibacteriales
+Incertae Sedis
+Isochrysidales
+JFR0501-aaa03b09
+JFR0501-aaa03c07
+JFR0502-aaa15a10
+JG30-KF-AS9
+JG30-KF-CM45
+JG37-AG-116
+JH-WHS99
+Jakobida
+KCLunmb-38-53
+KD2-123
+KD3-62
+KD3-66
+KI89A clade
+KM16
+Katablepharis
+Kazan-1B-37
+Kazan-3A-21
+Kazan-3B-09
+Kineosporiales
+Komma
+Kordiimonadales
+Ktedonobacterales
+LD1-PA20
+LD1-PA26
+LD1-PA34
+LD1-PB3
+LEMD267
+LG26-08
+LK-44f
+LKM11
+LKM15
+LNR A2-18
+Labyrinthulomycetes
+Lactobacillales
+Lamproderma
+Legionellales
+Lentisphaerales
+Lepidoderma
+Leptomyxida
+Leucocryptos
+Lineage I (Endomicrobia)
+Lineage IIa
+Lineage IIb
+Lineage IIc
+Lineage IV
+Longamoebia
+M2-18H10
+MAST-1
+MAST-12
+MAST-2
+MAST-3
+MAST-4
+MAST-6
+MAST-7
+MAST-8
+MAST-9
+MB11C04 marine group
+MD2894-B20
+MD2904-B13
+MH-XII
+ML-A-10
+ML1228J-2
+ML635J-35
+MPE1-14
+MSB-3A7 sediment group
+MSBL1
+MSBL2
+MSBL3
+MSBL5
+MSBL6
+MSBL8
+MSBL9
+MVP-88
+Macbrideola
+Magnetococcales
+Marine Benthic Group E
+Mariprofundales
+Meriderma
+Metazoa
+Methanobacteriales
+Methanocellales
+Methanococcales
+Methanomicrobiales
+Methanopyrales
+Methanosarcinales
+Methylococcales
+Methylophilales
+Micrococcales
+Micromonosporales
+Micronuclearia
+Mucilago
+Mycoplasmatales
+Myxococcales
+NA1-2A5
+NAMAKO-2
+NIF-4C10
+NK-L14
+NKB5
+NRB23
+NW414.14
+Napoli-4B-65
+Natranaerobiales
+Nautiliales
+Neisseriales
+Nematostelium
+Nitriliruptorales
+Nitrosomonadales
+Nitrospirales
+OCS116 clade
+ODP1230B30.09
+OLI11255
+OLI16010
+OLI26041
+OXIC-003
+Oceanospirillales
+Opalinata
+Opitutales
+Orbales
+Order II Incertae Sedis
+Order III Incertae Sedis
+Order IV Incertae Sedis
+Order Incertae Sedis
+Oxnerella
+P6-b51
+PAUC43f marine benthic group
+PB1-aai25f07
+PBS-18
+PBS-III-20
+PS-B32
+PYR10d3
+Parabasalia
+Parvularculales
+Pasteurellales
+Pavlova
+PeM15
+Pelagophyceae
+Peronosporomycetes
+Phaeocystis
+Phaeophyceae
+Phaeothamniophyceae
+Phalansterium
+Phycisphaerales
+Physarella
+Physarum
+Picomonadida
+Pinguiochrysidales
+Pla1 lineage
+Plagioselmis
+Planctomycetales
+Planoprotostelium
+Polysphondylium
+Porphyridiophyceae
+Preaxostyla
+Procabacteriales
+Propionibacteriales
+Protalveolata
+Proteomonas
+Protophysarum
+Protosporangiidae
+Protostelium
+Prymnesiales
+Pseudomonadales
+Pseudonocardiales
+Pterocystis
+Puniceicoccales
+Pyxidicula
+R103-B63
+R76-B128
+RF9
+RFP12 gut group
+RL185-aaj71c12
+RS-B22
+Raphidophyceae
+Raphidophyceaeae
+Rebecca
+Retaria
+Rhinomonas
+Rhizobiales
+Rhodellophyceae
+Rhodobacterales
+Rhodocyclales
+Rhodomonas
+Rhodospirillales
+Rickettsiales
+Rigifila
+Roombia
+Rozella
+Rs-K70 termite group
+Rs-M47
+Rubrobacterales
+Run-SP154
+S-70
+S0134 terrestrial group
+S15A-MN16
+S26-47
+SAR11 clade
+SAR324 clade(Marine group B)
+SB1-18
+SBYG-2613
+SBYG-4553
+SC-I-84
+SCM37C52
+SHA-35
+SHA-4
+SHA-41
+SHA-43
+SHBZ1548
+SS1-B-03-39
+SS1-B-09-64
+ST-12K10A
+SZB30
+Salinisphaerales
+Schizocladia
+Schizoplasmodiopsis
+Schizoplasmodium
+Selenomonadales
+Sh765B-AG-111
+Sh765B-TzT-29
+Sneathiellales
+Soliformovum
+Solirubrobacterales
+South African Goldmine Gp(SAGMEG)
+Sphaerobacterales
+Sphingobacteriales
+Sphingomonadales
+Spirochaetales
+Stemonitis
+Streptomycetales
+Streptosporangiales
+Stylonematales
+Subgroup 10
+Subgroup 11
+Subgroup 13
+Subgroup 17
+Subgroup 18
+Subgroup 19
+Subgroup 2
+Subgroup 20
+Subgroup 21
+Subgroup 23
+Subgroup 25
+Subgroup 3
+Subgroup 4
+Subgroup 5
+Subgroup 6
+Subgroup 7
+Subgroup 9
+SubgroupI
+SubsectionI
+SubsectionII
+SubsectionIII
+SubsectionIV
+SubsectionV
+Subulatomonas
+Sulfolobales
+Sva0071
+Sva0485
+Symphytocarpus
+Synergistales
+Syntrophobacterales
+Synurales
+T53A1
+TDNP-Wbc97-24-4-116
+TKR07M.92
+TPD-58
+TRA3-20
+TS-13
+Teleaulax
+Terrestrial Miscellaneous Gp(TMCG)
+Thermales
+Thermoanaerobacterales
+Thermococcales
+Thermodesulfobacteriales
+Thermogemmatisporales
+Thermolithobacterales
+Thermomicrobiales
+Thermophilales
+Thermoplasmatales
+Thermoproteales
+Thermotogales
+Thiotrichales
+Tychosporium
+UCT N117
+Umbilicosphaera
+VAN12
+VC1.2-cl42
+Verrucomicrobiales
+Vibrionales
+Victivallales
+W27
+W5
+WCHA1-57
+WCHB1-25
+WCHB1-41
+WD2101 soil group
+WIM 1 lineage
+WIM 5 lineage
+WN-HWB-116
+Xanthomonadales
+Xanthophyceae
+Z-21
+Z7ME43
+a87Y42
+aaa34a10
+c5LKS8
+d142
+iodide-oxidizers
+mle1-8
+oca12
+possible order 07
+sl1313
+ss1-B-07-44
+uncultured
+vadinBA26
+vadinHA64
