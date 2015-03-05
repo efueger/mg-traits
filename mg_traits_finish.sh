@@ -54,6 +54,8 @@ else
 	source ./00-environment
 fi
 
+LD_LIBRARY_PATH=/bioinf/projects/megx/mg-traits/bin/sina-1.2.13/lib:/bioinf/software/gcc/gcc-4.9/lib64:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH
 ###########################################################################################################
 # Check job array results
 ###########################################################################################################
