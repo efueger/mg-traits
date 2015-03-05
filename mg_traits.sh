@@ -607,7 +607,7 @@ echo "Submitting job array for SINA..."
 qsub -pe threaded 4 -t 1-$SUBJOBS -o $THIS_JOB_TMP_DIR -e $THIS_JOB_TMP_DIR -l ga -j y -terse -P megx.p -R y -m sa -M $mt_admin_mail -N $SINA_JOBARRAYID $mg_traits_dir/mg_traits_sina.sh $THIS_JOB_TMP_DIR
 
 echo "Submitting job array for FGS..."
-qsub -pe threaded 4 -t 1-$SUBJOBS -o $THIS_JOB_TMP_DIR -e $THIS_JOB_TMP_DIR -l ga -j y -terse -P megx.p -R y -m sa -M $mt_admin_mail -N $FGS_JOBARRAYID $mg_traits_dir/mg_traits_fgs.sh $THIS_JOB_TMP_DIR
+qsub -pe threaded 1 -t 1-$SUBJOBS -o $THIS_JOB_TMP_DIR -e $THIS_JOB_TMP_DIR -l ga -j y -terse -P megx.p -R y -m sa -M $mt_admin_mail -N $FGS_JOBARRAYID $mg_traits_dir/mg_traits_fgs.sh $THIS_JOB_TMP_DIR
 
 echo "Submitting finishing job..."
 qsub -pe threaded 6-12 -N $FINISHJOBID -o $THIS_JOB_TMP_DIR -e $THIS_JOB_TMP_DIR -l ga -j y -terse -P megx.p -R y -m sa -M $mt_admin_mail -hold_jid $FGS_JOBARRAYID,$SINA_JOBARRAYID $mg_traits_dir/mg_traits_finish.sh $THIS_JOB_TMP_DIR
