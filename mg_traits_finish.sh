@@ -135,7 +135,7 @@ EOF
 fi
 
 echo "Extracting PFAMS..."
-cut -f2,4 -d ',' $PFAMFILERAW > $PFAMFILE 
+cut -f2,7 -d ',' $PFAMFILERAW > $PFAMFILE 
 
 echo "Calculating functional table..."
 $r_interpreter --vanilla --slave <<RSCRIPT
