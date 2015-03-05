@@ -128,7 +128,7 @@ if [ "$?" -ne "0" ]; then
   cd ..
   mv $THIS_JOB_TMP_DIR $FAILED_JOBS_DIR
   mail -s "mg_traits:$THIS_JOB_ID subtask $SGE_TASK_ID failed" "$mt_admin_mail" <<EOF
-$uproc -t $NSLOTS -p -l -O 2 -P 3 -o $PFAMFILERAW $uproc_pfam $uproc_model $GENENT
+$uproc -t $NSLOTS -p -s -P 3 -o $PFAMFILERAW $uproc_pfam $uproc_model $GENENT
 exited with RC $? in job $JOB_ID.
 EOF
   exit 2
