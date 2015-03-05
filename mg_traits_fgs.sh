@@ -22,7 +22,7 @@ fi
 IN_FASTA_FILE="$WORK_DIR/05-part-$SGE_TASK_ID.fasta"
 
 # Gene calling via FGS
-echo $frag_gene_scan -genome=$IN_FASTA_FILE -out=$IN_FASTA_FILE.genes10 -complete=0 -train=illumina_5
+echo $frag_gene_scan -genome=$IN_FASTA_FILE -out=$IN_FASTA_FILE.genes10 -complete=0 -train=illumina_5 -threads=${NSLOTS}
 $frag_gene_scan -genome=$IN_FASTA_FILE -out=$IN_FASTA_FILE.genes10 -complete=0 -train=illumina_5
 
 if [ "$?" -ne "0" ]; then

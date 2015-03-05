@@ -4,10 +4,9 @@ set -o pipefail
 
 START_TIME=`date +%s.%N`
 
-export LD_LIBRARY_PATH=/bioinf/software/gcc/gcc-4.9/lib64:$LD_LIBRARY_PATH
-
-
 echo "Environment variables:"
+
+source ~/.bashrc
 
 mg_traits_dir="/bioinf/projects/megx/mg-traits/bin"
 temp_dir="/bioinf/projects/megx/scratch/mg-traits"
@@ -18,26 +17,28 @@ cd_hit_dup_version="0.5"
 cd_hit_est="/bioinf/software/cd-hit/cd-hit-4.6/cd-hit-est"
 cd_hit_mms="/bioinf/software/cd-hit/cd-hit-4.6/make_multi_seq.pl"
 cd_hit_version="4.6.1"
-frag_gene_scan="/bioinf/software/fraggenescan/fraggenescan-1.15/run_FragGeneScan.pl"
-frag_gene_scan_version="1.15-mod"
+frag_gene_scan="/bioinf/software/fraggenescan/fraggenescan-1.19/run_FragGeneScan.pl"
+frag_gene_scan_version="1.19"
 uproc_version="1.1.2"
 uproc=/bioinf/software/uproc/uproc-1.1/bin/uproc-dna
 uproc_pfam="/vol/biodb/uproc/pfam27"
 uproc_pfam_version="pfam27"
 uproc_model="/vol/biodb/uproc/model"
-sina="/bioinf/software/sina/sina-1.2.11/sina"
-sina_arb_pt_server="/bioinf/software/sina/sina-1.2.11/lib/arb_pt_server"
+sina="/arb/software/arb_ubuntu_1004/latest/sina-1.3.0/sina"
+sina_arb_pt_server="/arb/software/arb_ubuntu_1004/latest/sina-1.3.0/lib/arb_pt_server"
 sina_version="1.2.11"
 sina_seed="/local/biodb/mg-traits/sina/ssu_seed_50_26_05_13_cut_t.arb"
 sina_seed_version="ssu_seed_50_26_05_13_cut_t"
 sina_ref="/local/biodb/mg-traits/sina/ssuref_silva_nr99_115_20_07_13.arb"
 sina_ref_version="ssuref_silva_nr99_115_20_07_13.arb"
-ARBHOME="/bioinf/software/sina"
-LD_LIBRARY_PATH="/bioinf/software/sina/sina-1.2.11/lib"
-r_interpreter=/bioinf/software/R/R-3.1.2/bin/R
+ARBHOME="/arb/software/arb_ubuntu_1004/latest"
+LD_LIBRARY_PATH="/arb/software/arb_ubuntu_1004/latest/sina-1.3.0/lib:/bioinf/software/gcc/gcc-4.9/lib64:$LD_LIBRARY_PATH"
+r_interpreter="/bioinf/software/R/R-3.1.2/bin/R"
 r_interpreter_version="3.1.2"
 http_proxy="http://172.16.255.250:80"
 https_proxy="http://172.16.255.250:80"
+
+export LD_LIBRARY_PATH
 
 echo -e "\tJob ID: $JOB_ID"
 echo -e "\tTarget database: $target_db_user@$target_db_host:$target_db_port/$target_db_name"
@@ -599,14 +600,14 @@ echo uproc_model=$uproc_model >> 00-environment
 echo MG_ID=$MG_ID >> 00-environment
 echo SINA_LOG_DIR=$SINA_LOG_DIR >> 00-environment
 echo SLV_FILE=$SLV_FILE >> 00-environment
-echo ARBHOME=$arbhome >> 00-environment
-echo LD_LIBRARY_PATH=$ld_library_path >> 00-environment
+echo ARBHOME=$ARBHOME >> 00-environment
+echo LD_LIBRARY_PATH=$LD_LIBRARY_PATH >> 00-environment
 
 echo "Submitting job array for SINA..."
 qsub -pe threaded 4 -t 1-$SUBJOBS -o $THIS_JOB_TMP_DIR -e $THIS_JOB_TMP_DIR -l ga -j y -terse -P megx.p -R y -m sa -M $mt_admin_mail -N $SINA_JOBARRAYID $mg_traits_dir/mg_traits_sina.sh $THIS_JOB_TMP_DIR
 
 echo "Submitting job array for FGS..."
-qsub -t 1-$SUBJOBS -o $THIS_JOB_TMP_DIR -e $THIS_JOB_TMP_DIR -l ga -j y -terse -P megx.p -R y -m sa -M $mt_admin_mail -N $FGS_JOBARRAYID $mg_traits_dir/mg_traits_fgs.sh $THIS_JOB_TMP_DIR
+qsub -pe threaded 4 -t 1-$SUBJOBS -o $THIS_JOB_TMP_DIR -e $THIS_JOB_TMP_DIR -l ga -j y -terse -P megx.p -R y -m sa -M $mt_admin_mail -N $FGS_JOBARRAYID $mg_traits_dir/mg_traits_fgs.sh $THIS_JOB_TMP_DIR
 
 echo "Submitting finishing job..."
 qsub -pe threaded 6-12 -N $FINISHJOBID -o $THIS_JOB_TMP_DIR -e $THIS_JOB_TMP_DIR -l ga -j y -terse -P megx.p -R y -m sa -M $mt_admin_mail -hold_jid $FGS_JOBARRAYID,$SINA_JOBARRAYID $mg_traits_dir/mg_traits_finish.sh $THIS_JOB_TMP_DIR
