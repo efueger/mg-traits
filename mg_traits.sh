@@ -4,6 +4,9 @@ set -o pipefail
 
 START_TIME=`date +%s.%N`
 
+export LD_LIBRARY_PATH=/bioinf/software/gcc/gcc-4.9/lib64:$LD_LIBRARY_PATH
+
+
 echo "Environment variables:"
 
 mg_traits_dir="/bioinf/projects/megx/mg-traits/bin"
