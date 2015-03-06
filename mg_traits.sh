@@ -75,7 +75,7 @@ CLUST95_LOG=$CLUST95".log"
 CLUST95_CLSTR=$CLUST95".clstr"
 INFOSEQ_TMPFILE="04-stats-tempfile"
 INFOSEQ_MGSTATS="04-mg_stats"
-NSEQ=100
+NSEQ=500
 FGS_JOBARRAYID="mt-$JOB_ID-fgs"
 SINA_JOBARRAYID="mt-$JOB_ID-sina"
 FINISHJOBID="mt-$JOB_ID-finish"
@@ -335,9 +335,9 @@ fi
 
 #Check if the url already exist on our DB
 
-URLDB=$(psql -t -U $target_db_user -h $target_db_host -p $target_db_port -d $target_db_name -c "SELECT count(*) FROM mg_traits.mg_traits_jobs where mg_url = '${MG_URL}' AND sample_label NOT ILIKE '%test%'")
+URLDB=$(psql -t -U $target_db_user -h $target_db_host -p $target_db_port -d $target_db_name -c "SELECT count(*) FROM mg_traits.mg_traits_jobs where mg_url = '${MG_URL}' AND sample_label NOT ILIKE '%test% AND return_code = 0'")
 
-if [ ${URLDB} -gt 0 ]; then
+if [ ${URLDB} -gt 1 ]; then
   echo "UPDATE mg_traits.mg_traits_jobs SET time_finished = now(), return_code = 1, error_message = 'The URL $MG_URL has been already succesfully crunched. If the file is different please change the file name.' WHERE sample_label = '$SAMPLE_LABEL' AND id = '$MG_ID';" | psql -U $target_db_user -h $target_db_host -p $target_db_port -d $target_db_name
   cd ..
   mv $THIS_JOB_TMP_DIR $FAILED_JOBS_DIR
@@ -604,13 +604,13 @@ echo ARBHOME=$ARBHOME >> 00-environment
 echo LD_LIBRARY_PATH=$LD_LIBRARY_PATH >> 00-environment
 
 echo "Submitting job array for SINA..."
-qsub -pe threaded 4 -t 1-$SUBJOBS -o $THIS_JOB_TMP_DIR -e $THIS_JOB_TMP_DIR -l ga -j y -terse -P megx.p -R y -m sa -M $mt_admin_mail -N $SINA_JOBARRAYID $mg_traits_dir/mg_traits_sina.sh $THIS_JOB_TMP_DIR
+qsub -pe threaded 2 -l mem_free=4500M  -t 1-$SUBJOBS -o $THIS_JOB_TMP_DIR -e $THIS_JOB_TMP_DIR -l ga -j y -terse -P megx.p -R y -m sa -M $mt_admin_mail -N $SINA_JOBARRAYID $mg_traits_dir/mg_traits_sina.sh $THIS_JOB_TMP_DIR
 
 echo "Submitting job array for FGS..."
 qsub -pe threaded 1 -t 1-$SUBJOBS -o $THIS_JOB_TMP_DIR -e $THIS_JOB_TMP_DIR -l ga -j y -terse -P megx.p -R y -m sa -M $mt_admin_mail -N $FGS_JOBARRAYID $mg_traits_dir/mg_traits_fgs.sh $THIS_JOB_TMP_DIR
 
 echo "Submitting finishing job..."
-qsub -pe threaded 6-12 -N $FINISHJOBID -o $THIS_JOB_TMP_DIR -e $THIS_JOB_TMP_DIR -l ga -j y -terse -P megx.p -R y -m sa -M $mt_admin_mail -hold_jid $FGS_JOBARRAYID,$SINA_JOBARRAYID $mg_traits_dir/mg_traits_finish.sh $THIS_JOB_TMP_DIR
+qsub -pe threaded 8-12 -N $FINISHJOBID -o $THIS_JOB_TMP_DIR -e $THIS_JOB_TMP_DIR -l ga -j y -terse -P megx.p -R y -m sa -M $mt_admin_mail -hold_jid $FGS_JOBARRAYID,$SINA_JOBARRAYID $mg_traits_dir/mg_traits_finish.sh $THIS_JOB_TMP_DIR
 
 ## permantly copying local cluster node files to NFS
 #cp ${job_out_dir}/* $THIS_JOB_TMP_DIR
