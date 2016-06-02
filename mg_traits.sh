@@ -7,6 +7,7 @@ START_TIME=`date +%s.%N`
 echo "Environment variables:"
 
 source ~/.bashrc
+source config.proxy
 
 mg_traits_dir="/bioinf/projects/megx/mg-traits/bin"
 temp_dir="/bioinf/projects/megx/scratch/mg-traits"
