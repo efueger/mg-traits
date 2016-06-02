@@ -36,8 +36,6 @@ LD_LIBRARY_PATH="/bioinf/projects/megx/mg-traits/bin/sina-1.2.13/lib:/bioinf/sof
 r_interpreter="/bioinf/software/R/R-3.1.2/bin/R"
 r_interpreter_version="3.1.2"
 
-http_proxy="http://webproxy.mpi-bremen.de:3128"
-https_proxy="https://webproxy.mpi-bremen.de:3128"
 
 export LD_LIBRARY_PATH
 
@@ -262,14 +260,13 @@ fi
 ###########################################################################################################
 # Download data files from SVN
 ###########################################################################################################
-export http_proxy="http://webproxy.mpi-bremen.de:3128"
-export https_proxy="https://webproxy.mpi-bremen.de:3128"
+
 
 echo "$PFAM_ACCESSIONS_URL"
 curl -s $PFAM_ACCESSIONS_URL > $PFAM_ACCESSIONS
 if [ "$?" -ne "0" ]; then
   echo "failed"
-  echo "UPDATE mg_traits.mg_traits_jobs SET time_finished = now(), return_code = 1, error_message = 'Could not retrieve $PFAM_ACCESSIONS_URL' WHERE sample_label = '$SAMPLE_LABEL' AND id = $MG_ID;" | psql -U $target_db_user -h $target_db_host -p $target_db_port -d $target_db_name
+  echo "UPDATE mg_traits.mg_traits_jobs SET time_finished = now(), return_code = 1, error_message = 'Could not retrieve with http $PFAM_ACCESSIONS_URL' WHERE sample_label = '$SAMPLE_LABEL' AND id = $MG_ID;" | psql -U $target_db_user -h $target_db_host -p $target_db_port -d $target_db_name
   cd ..
   mv $THIS_JOB_TMP_DIR $FAILED_JOBS_DIR
   #rm -rf $THIS_JOB_TMP_DIR
