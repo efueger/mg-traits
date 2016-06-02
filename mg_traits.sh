@@ -7,7 +7,7 @@ START_TIME=`date +%s.%N`
 echo "Environment variables:"
 
 source ~/.bashrc
-source config.prox
+source config.proxy
 
 if [[ $? -ne 0 ]]; then 
   mail -s "mg_traits:$JOB_ID failed" "epereira@mpi-bremen.de" <<EOF
