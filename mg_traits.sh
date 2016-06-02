@@ -9,6 +9,11 @@ echo "Environment variables:"
 source ~/.bashrc
 source config.proxy
 
+if [[ $? -ne 0 ]]; then 
+  mail -s "mg_traits:$JOB_ID failed" "epereira@mpi-bremen.de" <<EOF
+  proxy not working 
+EOF
+
 mg_traits_dir="/bioinf/projects/megx/mg-traits/bin"
 temp_dir="/bioinf/projects/megx/scratch/mg-traits"
 job_out_dir="/vol/tmp/megx/"
