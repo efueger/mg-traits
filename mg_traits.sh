@@ -9,8 +9,8 @@ echo "Environment variables:"
 source ~/.bashrc
 
 source  /bioinf/home/epereira/workspace/mg-traits/config.proxy 
-
-
+export "${http_proxy}"
+export "${https_proxy}"
 
 # mail -s "mg_traits:$JOB_ID failed" "epereira@mpi-bremen.de" <<EOF
 # proxy not working $http_proxy
