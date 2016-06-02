@@ -18,6 +18,8 @@ fi
 
 export ARBHOME
 export LD_LIBRARY_PATH
+source  /bioinf/home/epereira/workspace/mg-traits/config.proxy 
+
 
 IN_FASTA_FILE="$WORK_DIR/05-part-$SGE_TASK_ID.fasta"
 SINA_OUTFILE_SCREEN="$WORK_DIR/05-part-$SGE_TASK_ID.16S.screen.fasta"
