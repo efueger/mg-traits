@@ -11,7 +11,7 @@ source ~/.bashrc
 mg_traits_dir="/bioinf/projects/megx/mg-traits/bin"
 temp_dir="/bioinf/projects/megx/scratch/mg-traits"
 job_out_dir="/vol/tmp/megx/"
-mt_admin_mail="afernand@mpi-bremen.de,rkottman@mpi-bremen.de"
+mt_admin_mail="epereira@mpi-bremen.de"
 cd_hit_dup="/bioinf/software/cd-hit/cd-hit-4.6/cd-hit-dup"
 cd_hit_dup_version="0.5"
 cd_hit_est="/bioinf/software/cd-hit/cd-hit-4.6/cd-hit-est"
@@ -35,8 +35,9 @@ ARBHOME="/bioinf/projects/megx/mg-traits/bin/sina-1.2.13/"
 LD_LIBRARY_PATH="/bioinf/projects/megx/mg-traits/bin/sina-1.2.13/lib:/bioinf/software/gcc/gcc-4.9/lib64:$LD_LIBRARY_PATH"
 r_interpreter="/bioinf/software/R/R-3.1.2/bin/R"
 r_interpreter_version="3.1.2"
-http_proxy="http://172.16.255.250:80"
-https_proxy="http://172.16.255.250:80"
+
+http_proxy="http://webproxy.mpi-bremen.de:3128"
+https_proxy="https://webproxy.mpi-bremen.de:3128"
 
 export LD_LIBRARY_PATH
 
