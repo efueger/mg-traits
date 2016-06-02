@@ -7,10 +7,7 @@ START_TIME=`date +%s.%N`
 echo "Environment variables:"
 
 source ~/.bashrc
-
 source  /bioinf/home/epereira/workspace/mg-traits/config.proxy 
-# export "${http_proxy}"
-# export "${https_proxy}"
 
 mg_traits_dir="/bioinf/projects/megx/mg-traits/bin"
 temp_dir="/bioinf/projects/megx/scratch/mg-traits"
@@ -24,7 +21,7 @@ cd_hit_version="4.6.1"
 frag_gene_scan="/bioinf/software/fraggenescan/fraggenescan-1.19/run_FragGeneScan.pl"
 frag_gene_scan_version="1.19"
 uproc_version="1.1.2"
-uproc=/bioinf/software/uproc/uproc-1.1/bin/uproc-dna
+uproc="/bioinf/software/uproc/uproc-1.1/bin/uproc-dna"
 uproc_pfam="/vol/biodb/uproc/pfam27"
 uproc_pfam_version="pfam27"
 uproc_model="/vol/biodb/uproc/model"

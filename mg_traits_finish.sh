@@ -63,6 +63,7 @@ export LD_LIBRARY_PATH
 FAA_RESULTS=$(ls -1 05-part*.faa | wc -l)
 FFN_RESULTS=$(ls -1 05-part*.ffn | wc -l)
 SLV_CLASSIFY_RESULTS=$(ls -1 05-part-*.screen.fasta | wc -l)
+SUBJOBS=$(ls -1 05-part*.fasta | wc -l)
 echo "subjobs: $SUBJOBS"
 echo "FAA results found: $FAA_RESULTS"
 echo "FFN results found: $FFN_RESULTS"
