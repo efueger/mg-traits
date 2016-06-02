@@ -8,14 +8,13 @@ echo "Environment variables:"
 
 source ~/.bashrc
 
-SEE=$( cat /bioinf/home/epereira/workspace/mg-traits/config.proxy)
+SEE=$( cat /bioinf/home/epereira/workspace/mg-traits/config.proxy )
 
-if [[ -n $http_proxy ]]; then
+
 mail -s "mg_traits:$JOB_ID failed" "epereira@mpi-bremen.de" <<EOF
 proxy not working $SEE
 EOF
 exit 1;
-fi
 
 mg_traits_dir="/bioinf/projects/megx/mg-traits/bin"
 temp_dir="/bioinf/projects/megx/scratch/mg-traits"
