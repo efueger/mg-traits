@@ -562,7 +562,7 @@ printf "Number of bases: %d\nGC content: %f\nGC variance: %f\n" $NUM_BASES $GC $
 #Split original
 printf "Splitting file ($NSEQ seqs file)..."
 awk -vO=$NSEQ 'BEGIN {n_seq=0;partid=1;} /^>/ {if(n_seq%O==0){file=sprintf("05-part-%d.fasta",partid);partid++;} print >> file; n_seq++; next;} { print >> file; }' < $RAW_FASTA
-SUBJOBS=$(ls -1 05-part*.fasta | wc -l)
+
 echo "OK"
 echo "Split into $SUBJOBS sub jobs..."
 
