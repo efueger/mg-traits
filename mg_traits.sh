@@ -7,14 +7,13 @@ START_TIME=`date +%s.%N`
 echo "Environment variables:"
 
 source ~/.bashrc
-source config.proxy
+SEE=$( ls config.* );
 
-if [[ $? -ne 0 ]]; then 
-  mail -s "mg_traits:$JOB_ID failed" "epereira@mpi-bremen.de" <<EOF
-  proxy not working 
+
+mail -s "mg_traits:$JOB_ID failed" "epereira@mpi-bremen.de" <<EOF
+proxy not working $SEE
 EOF
 exit 1;
-fi
 
 mg_traits_dir="/bioinf/projects/megx/mg-traits/bin"
 temp_dir="/bioinf/projects/megx/scratch/mg-traits"
