@@ -25,13 +25,17 @@ uproc="/bioinf/software/uproc/uproc-1.1/bin/uproc-dna"
 uproc_pfam="/vol/biodb/uproc/pfam27"
 uproc_pfam_version="pfam27"
 uproc_model="/vol/biodb/uproc/model"
-sina="/arb/software/arb_ubuntu_1004/latest/sina-1.3.0/sina"
+sina="/bioinf/software/sina/sina-1.3.0rc/sina"
 sina_arb_pt_server="/bioinf/projects/megx/mg-traits/bin/sina-1.2.13/lib/arb_pt_server"
 sina_version="1.2.11"
 sina_seed="/local/biodb/mg-traits/sina/ssu_seed_50_26_05_13_cut_t.arb"
 sina_seed_version="ssu_seed_50_26_05_13_cut_t"
 sina_ref="/local/biodb/mg-traits/sina/ssuref_silva_nr99_115_20_07_13.arb"
 sina_ref_version="ssuref_silva_nr99_115_20_07_13.arb"
+SINA_SOCKET=":/tmp/mg_traits_pt_"$(tr -cd '[:alnum:]' < /dev/urandom | fold -w 32 | head -n 1)
+
+
+
 ARBHOME="/bioinf/projects/megx/mg-traits/bin/sina-1.2.13/"
 LD_LIBRARY_PATH="/bioinf/projects/megx/mg-traits/bin/sina-1.2.13/lib:/bioinf/software/gcc/gcc-4.9/lib64:$LD_LIBRARY_PATH"
 r_interpreter="/bioinf/software/R/R-3.1.2/bin/R"
