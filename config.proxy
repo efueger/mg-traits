@@ -1,0 +1,2 @@
+export http_proxy=http://webproxy.mpi-bremen.de:3128
+export https_proxy=https://webproxy.mpi-bremen.de:3128
