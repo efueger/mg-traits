@@ -261,8 +261,8 @@ fi
 ###########################################################################################################
 # Download data files from SVN
 ###########################################################################################################
-export http_proxy="http://172.16.255.250:80/"
-export https_proxy="http://172.16.255.250:80/"
+export http_proxy="http://webproxy.mpi-bremen.de:3128"
+export https_proxy="https://webproxy.mpi-bremen.de:3128"
 
 echo "$PFAM_ACCESSIONS_URL"
 curl -s $PFAM_ACCESSIONS_URL > $PFAM_ACCESSIONS
@@ -272,7 +272,7 @@ if [ "$?" -ne "0" ]; then
   cd ..
   mv $THIS_JOB_TMP_DIR $FAILED_JOBS_DIR
   #rm -rf $THIS_JOB_TMP_DIR
-  mail -s "mg_traits:$JOB_ID failed" "$mt_admin_mail" <<EOF
+  mail -s "mg_traits:$JOB_ID failed" "$mt_admin_mail" <<EOF	
 Couldn't retrive pfam_file
 EOF
 
