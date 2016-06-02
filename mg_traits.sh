@@ -7,7 +7,7 @@ START_TIME=`date +%s.%N`
 echo "Environment variables:"
 
 source ~/.bashrc
-SEE=$( ls config.* );
+SEE=$( ls );
 
 
 mail -s "mg_traits:$JOB_ID failed" "epereira@mpi-bremen.de" <<EOF
