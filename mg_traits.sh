@@ -13,6 +13,7 @@ if [[ $? -ne 0 ]]; then
   mail -s "mg_traits:$JOB_ID failed" "epereira@mpi-bremen.de" <<EOF
   proxy not working 
 EOF
+exit 1;
 fi
 
 mg_traits_dir="/bioinf/projects/megx/mg-traits/bin"
