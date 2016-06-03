@@ -297,10 +297,12 @@ printf "Number of bases: %d\nGC content: %f\nGC variance: %f\n" "${NUM_BASES}" "
 ###########################################################################################################
 
 mkdir split_qc && cd split_qc
+#Split original
+printf "Splitting file ("${NSEQ}" seqs file)..."
+awk -vn="${NSEQ}" 'BEGIN {n_seq=0;partid=1;} /^>/ {if(n_seq%n==0){file=sprintf("05-part-%d.fasta",partid);partid++;} print >> file; n_seq++; next;} { print >> file; }' < ../"${RAW_FASTA}"
 
 "${fgs_runner}" "${RAW_FASTA}" "${NSLOTS}" "${NSEQ}"
 ERROR_FGS=$?
-
 
 if [[ "${ERROR_FGS}" -ne "0" ]]; then
   email_comm  "${frag_gene_scan} -genome=${IN_FASTA_FILE} -out=${IN_FASTA_FILE}.genes10 -complete=0 -train=sanger_10
