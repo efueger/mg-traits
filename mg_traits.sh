@@ -105,7 +105,7 @@ fi
 echo "${MG_URL}"
 REGEX='(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]'
 
-if [[ ! "${MG_URL}" =~ ${REGEX} ]]; then
+if [[ ! ${MG_URL} =~ ${REGEX} ]]; then
   email_comm "Invalid URL ${MG_URL}"
   db_error_comm "Not a valid URL"
   exit 1
@@ -120,7 +120,7 @@ if [[ "${URLDB}" -gt 1 ]]; then
   email_comm "The URL "${MG_URL}" has been already succesfully crunched. If the file is different please change the file name"
   db_error_comm "The URL ${MG_URL} has been already succesfully crunched. If the file is different please change the file name."
   exit 1
-fi  
+fi
 
 
 # download MG_URL
