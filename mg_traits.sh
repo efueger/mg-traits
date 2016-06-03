@@ -101,10 +101,12 @@ fi
 
 echo "This job tmp dir: ${THIS_JOB_TMP_DIR}"; 
 
-rm -r $(ls -lrt | tail -1 | awk '{ print $8}') # CHANGE THIS FOR REAL DATA!!!!!!!!!!
+ # CHANGE THIS FOR REAL DATA!!!!!!!!!!
 mkdir "${THIS_JOB_TMP_DIR}" && cd "${THIS_JOB_TMP_DIR}"
 mkdir "${THIS_JOB_TMP_DIR_DATA}" && mkdir "${SINA_LOG_DIR}"
 
+FILE=$(ls -lrt ../ | tail -2 | head -1 | awk '{ print $8}')
+rm -r $FILE
 
 echo "Logs, data and temp files will be written to:$(pwd)"
 if [[ "$(pwd)" != "${THIS_JOB_TMP_DIR}" ]]; then 
