@@ -205,7 +205,9 @@ fi
 
 # pfam downlaod
 echo "${PFAM_ACCESSIONS_URL}"
-curl -s "${PFAM_ACCESSIONS_URL}" > "${PFAM_ACCESSIONS}"
+curl -s "${PFAM_ACCESSIONS_URL}" > temp
+
+#> "${PFAM_ACCESSIONS}"
 
 if [[ "$?" -ne "0" ]]; then
   email_comm "Could not retrieve ${PFAM_ACCESSIONS_URL} $http_proxy"
