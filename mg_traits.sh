@@ -335,9 +335,9 @@ cd ../
 ###########################################################################################################
 
 
-mkdir sortmerna_out && cd sortmerna_out
+#mkdir sortmerna_out && cd sortmerna_out
 
-"${sortmerna_runner}" "../${RAW_FASTA}" "${NSLOTS}"
+"${sortmerna_runner}" "${RAW_FASTA}" "${NSLOTS}"
 ERROR_SORTMERNA=$?
 
 
