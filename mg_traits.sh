@@ -172,13 +172,13 @@ fi
 ###########################################################################################################
 
 printf "Validating file..."
-"${fasta_file_check}" "${RAW_FASTA}" "${FASTA_BAD}"
+${fasta_file_check} "${RAW_FASTA}" "${FASTA_BAD}"
 FASTA_ERROR_CODE="$?"
 
 if [[ "${FASTA_ERROR_CODE}" -ne "0" ]]; then
   FASTA_BAD_HEADER=$(grep '>' "${FASTA_BAD}" | tr -d '>'); 
   
-  email_comm "${MG_URL} is not a valid FASTA file. FASTA validation failed at sequence ${FASTA_BAD_HEADER}, error: ${FASTA_ERROR_CODE}. See ${FASTA_BAD}"
+  email_comm "${MG_URL} is not a valid FASTA file. FASTA validation failed at sequence ${FASTA_BAD_HEADER}, error: ${FASTA_ERROR_CODE}. See ${FASTA_BAD}. ${fasta_file_check} "${RAW_FASTA}" "${FASTA_BAD}""
   db_error_comm  "${MG_URL} is not a valid FASTA file. Sequence validation failed. Error: ${FASTA_ERROR_CODE}. See ${FASTA_BAD}"
   
   exit 1
