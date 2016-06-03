@@ -24,7 +24,7 @@ cat > sina.runner << EOF
 #$ -t 1-${NFILES} 
 #$ -cwd 
 #$ -j y 
-#$ -pe threaded ${NSLOTS} 
+#$ -pe threaded ${NSLOTS}
 
 ############################
 # define functions
