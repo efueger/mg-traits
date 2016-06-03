@@ -50,7 +50,7 @@ echo -e "\tCD-HIT-DUP: $cd_hit_dup"
 echo -e "\tCD-HIT-EST: $cd_hit_est"
 echo -e "\tCD-HIT-MMS: $cd_hit_mms"
 echo -e "\tFragGeneScan: $frag_gene_scan"
-echo -e "\tUPro: $upro"
+echo -e "\tUPro: $uproc"
 echo -e "\tR: $r_interpreter"
 echo -e "\tTemp dir: $temp_dir"
 echo -e "\tMG traits dir: $mg_traits_dir"
@@ -209,8 +209,8 @@ elif [ ! -f $cd_hit_est ]; then
 	ERROR_MESSAGE="cannot find CD-HIT-EST at '$cd_hit_est'"
 elif [ ! -f $cd_hit_mms ]; then
 	ERROR_MESSAGE="cannot find CD-HIT-MMS at '$cd_hit_mms'"
-elif [ ! -f $upro ]; then
-	ERROR_MESSAGE="cannot find UPro '$upro'"
+elif [ ! -f $uproc ]; then
+	ERROR_MESSAGE="cannot find UPro '$uproc'"
 elif [ ! -f $r_interpreter ]; then
 	ERROR_MESSAGE="cannot find R at '$r_interpreter'"
 #elif [ ! -f $PFAM_ACCESSIONS ]; then
@@ -223,8 +223,8 @@ elif [ ! -x $cd_hit_est ]; then
 	ERROR_MESSAGE="no permission to execute CD-HIT-EST '$cd_hit_est'"
 elif [ ! -x $cd_hit_mms ]; then
 	ERROR_MESSAGE="no permission to execute CD-HIT-MMS  '$cd_hit_mms'"
-elif [ ! -x $upro ]; then
-	ERROR_MESSAGE="no permission to execute UPro '$upro'"
+elif [ ! -x $uproc ]; then
+	ERROR_MESSAGE="no permission to execute UPro '$uproc'"
 elif [ ! -x $r_interpreter ]; then
 	ERROR_MESSAGE="no permission to find R '$r_interpreter'"
 #elif [ ! -r $PFAM_ACCESSIONS ]; then
