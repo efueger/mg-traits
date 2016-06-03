@@ -84,15 +84,6 @@ done
 # | psql -U "${target_db_user}" -h "${target_db_host}" -p "${target_db_port}" -d "${target_db_name}")
 
 
-echo "DELETE FROM mg_traits.mg_traits_jobs WHERE sample_label = '${SAMPLE_LABEL}';" \
-| psql -U "${target_db_user}" -h "${target_db_host}" -p "${target_db_port}" -d "${target_db_name}"
-
-if [[ "$?" -ne "0" ]]; then
-
-  email_comm "no delete"
-  
-fi  
-
 DB_RESULT=$( echo "UPDATE mg_traits.mg_traits_jobs SET time_started = now(), job_id = ${JOB_ID}, cluster_node = '${HOSTNAME}' WHERE sample_label = '${SAMPLE_LABEL}' AND id = ${MG_ID};" \
 | psql -U "${target_db_user}" -h "${target_db_host}" -p "${target_db_port}" -d "${target_db_name}" )
 
@@ -121,15 +112,27 @@ if [[ ! ${MG_URL} =~ ${REGEX} ]]; then
 fi 
 
 
+
+echo "DELETE FROM mg_traits.mg_traits_jobs WHERE sample_label = '${SAMPLE_LABEL}';" \
+| psql -U "${target_db_user}" -h "${target_db_host}" -p "${target_db_port}" -d "${target_db_name}"
+
+if [[ "$?" -ne "0" ]]; then
+
+  email_comm "no delete"
+  
+fi  
+
+
+
 # check if it already exist on our DB
-URLDB=$(psql -t -U "${target_db_user}" -h "${target_db_host}" -p "${target_db_port}" -d "${target_db_name}" -c \
-"SELECT count(*) FROM mg_traits.mg_traits_jobs where mg_url = '${MG_URL}' AND sample_label NOT ILIKE '%test% AND return_code = 0'")
-    
-if [[ "${URLDB}" -gt 1 ]]; then 
-  email_comm "The URL "${MG_URL}" has been already succesfully crunched. If the file is different please change the file name"
-  db_error_comm "The URL ${MG_URL} has been already succesfully crunched. If the file is different please change the file name."
-  exit 1
-fi
+# URLDB=$(psql -t -U "${target_db_user}" -h "${target_db_host}" -p "${target_db_port}" -d "${target_db_name}" -c \
+# "SELECT count(*) FROM mg_traits.mg_traits_jobs where mg_url = '${MG_URL}' AND sample_label NOT ILIKE '%test% AND return_code = 0'")
+#     
+# if [[ "${URLDB}" -gt 1 ]]; then 
+#   email_comm "The URL "${MG_URL}" has been already succesfully crunched. If the file is different please change the file name"
+#   db_error_comm "The URL ${MG_URL} has been already succesfully crunched. If the file is different please change the file name."
+#   exit 1
+# fi
 
 
 # download MG_URL
