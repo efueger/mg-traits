@@ -335,15 +335,19 @@ cd ../
 ###########################################################################################################
 
 
-"${sortmerna_runner}" "${RAW_FASTA}" "${NSLOTS}" "${RES}"
+"${sortmerna_runner}" "${RAW_FASTA}" "${NSLOTS}"
 ERROR_SORTMERNA=$?
+
+mkdir sortmerna_out && cd sortmerna_out
 
 if [[ "${ERROR_SORTMERNA}" -ne "0" ]]; then
   email_comm "${sortmerna} --reads ${SE} -a ${NSLOTS} --ref ${DB}/rRNA_databases/silva-bac-16s-id90.fasta ...
 exited with RC ${ERROR_SORTMERNA} in job ${JOB_ID}."
-  db_error_comm "sormerna failed. Please contact adminitrator"
+  db_error_comm "sortmerna failed. Please contact adminitrator"
   exit 2
 fi
+
+cd ../
 
 
 ###########################################################################################################
