@@ -334,7 +334,7 @@ fi
 
 mkdir split_smr && cd split_smr
 
-bash ${BIN}/sina_runner.sh "${NAM}" "${NSLOTS}" "${nSEQ}" "${RES}"
+"${sina_runner}" "${NAM}" "${NSLOTS}" "${nSEQ}" "${RES}"
 ERROR_SINA=$?
 
 if [[ "${ERROR_SINA}" -ne "0" ]]; then
