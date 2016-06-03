@@ -97,8 +97,27 @@ if [[ "${DB_RESULT}" != "UPDATE 1" ]]; then
   exit 2
 fi
 
+
 ###########################################################################################################
-# 2 - Download file from MG URL
+# 2 - Create job directory
+###########################################################################################################
+
+echo "This job tmp dir: ${THIS_JOB_TMP_DIR}"; 
+
+mkdir "${THIS_JOB_TMP_DIR}" && cd "${THIS_JOB_TMP_DIR}"
+mkdir "${THIS_JOB_TMP_DIR_DATA}" && mkdir "${SINA_LOG_DIR}"
+
+echo "Logs, data and temp files will be written to:$(pwd)"
+if [[ "$(pwd)" != "${THIS_JOB_TMP_DIR}" ]]; then 
+ email_comm  "Could not access job temp dir ${THIS_JOB_TMP_DIR}"
+ db_error_comm "Could not access job temp dir ${THIS_JOB_TMP_DIR}"
+ 
+ exit 2; 
+fi
+
+
+###########################################################################################################
+# 3 - Download file from MG URL
 ###########################################################################################################
 
 # validate MG URL 
@@ -153,7 +172,7 @@ if [[ "$?" -ne "0" ]]; then
 fi
   
 ###########################################################################################################
-# 3 -  Validate file
+# 4 -  Validate file
 ###########################################################################################################
 
 printf "Validating file..."
@@ -169,22 +188,6 @@ if [[ "${FASTA_ERROR_CODE}" -ne "0" ]]; then
   exit 1
 fi
 
-###########################################################################################################
-# 4 - Create job directory
-###########################################################################################################
-
-echo "This job tmp dir: ${THIS_JOB_TMP_DIR}"; 
-
-mkdir "${THIS_JOB_TMP_DIR}" && cd "${THIS_JOB_TMP_DIR}"
-mkdir "${THIS_JOB_TMP_DIR_DATA}" && mkdir "${SINA_LOG_DIR}"
-
-echo "Logs, data and temp files will be written to:$(pwd)"
-if [[ "$(pwd)" != "${THIS_JOB_TMP_DIR}" ]]; then 
- email_comm  "Could not access job temp dir ${THIS_JOB_TMP_DIR}"
- db_error_comm "Could not access job temp dir ${THIS_JOB_TMP_DIR}"
- 
- exit 2; 
-fi
 
 ###########################################################################################################
 # 5 - Check for utilities and directories
