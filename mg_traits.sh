@@ -337,12 +337,12 @@ cd ../
 
 mkdir sortmerna_out && cd sortmerna_out
 
-"${sortmerna_runner}" "${RAW_FASTA}" "${NSLOTS}"
+"${sortmerna_runner}" "../${RAW_FASTA}" "${NSLOTS}"
 ERROR_SORTMERNA=$?
 
 
 if [[ "${ERROR_SORTMERNA}" -ne "0" ]]; then
-  email_comm "${sortmerna} --reads ${SE} -a ${NSLOTS} --ref ${DB}/rRNA_databases/silva-bac-16s-id90.fasta ...
+  email_comm "${sortmerna} --reads ../${RAW_FASTA} -a ${NSLOTS} --ref ${DB}/rRNA_databases/silva-bac-16s-id90.fasta ...
 exited with RC ${ERROR_SORTMERNA} in job ${JOB_ID}."
   db_error_comm "sortmerna failed. Please contact adminitrator"
   exit 2
