@@ -103,9 +103,9 @@ fi
 
 # validate MG URL 
 echo "${MG_URL}"
-REGX='(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]'
+REGEX='(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]'
 
-if [[ ! "${MG_URL}" =~ "${REGX}" ]]; then 
+if [[ ! "${MG_URL}" =~ ${REGEX} ]]; then
   email_comm "Invalid URL ${MG_URL}"
   db_error_comm "Not a valid URL"
   exit 1
