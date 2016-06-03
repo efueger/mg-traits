@@ -75,22 +75,23 @@ fi
 
 done
 
-echo -e "SAMPLE_LABEL=${SAMPLE_LABEL}\nMG_URL=${MG_URL}\nCUSTOMER=${CUSTOMER}\nSAMPLE_ENVIRONMENT=${SAMPLE_ENVIRONMENT}\n\
-SUBMIT_TIME=${SUBMIT_TIME}\nMAKE_PUBLIC=${MAKE_PUBLIC}\nMAKE_PUBLIC=${MAKE_PUBLIC}\nKEEP_DATA=${KEEP_DATA}\nMG_ID=${MG_ID}" > tmp.vars 
 
 ###########################################################################################################
 # 1 - Check database connection
 ###########################################################################################################
 
-DB_RESULT=$(echo "UPDATE mg_traits.mg_traits_jobs SET time_started = now(), job_id = ${JOB_ID}, cluster_node = ${HOSTNAME} WHERE sample_label = ${SAMPLE_LABEL} AND id = ${MG_ID};" \
-| psql -U "${target_db_user}" -h "${target_db_host}" -p "${target_db_port}" -d "${target_db_name}")
+# DB_RESULT=$(echo "UPDATE mg_traits.mg_traits_jobs SET time_started = now(), job_id = ${JOB_ID}, cluster_node = ${HOSTNAME} WHERE sample_label = ${SAMPLE_LABEL} AND id = ${MG_ID};" \
+# | psql -U "${target_db_user}" -h "${target_db_host}" -p "${target_db_port}" -d "${target_db_name}")
+
+
+DB_RESULT=`echo "UPDATE mg_traits.mg_traits_jobs SET time_started = now(), job_id = $JOB_ID, cluster_node = '$HOSTNAME' WHERE sample_label = '$SAMPLE_LABEL' AND id = $MG_ID;" | psql -U $target_db_user -h $target_db_host -p $target_db_port -d $target_db_name`
 
 if [[ "$?" -ne "0" ]]; then
   email_comm "Cannot connect to database. Output:${DB_RESULT}"
   exit 2
 fi
 
-if [[ "$DB_RESULT" != "UPDATE 1" ]]; then
+if [[ "${DB_RESULT}" != "UPDATE 1" ]]; then
   email_comm "sample name ${SAMPLE_LABEL} is not in database Result:${DB_RESULT}"  
   exit 2
 fi
