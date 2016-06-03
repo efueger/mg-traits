@@ -84,7 +84,7 @@ done
 # | psql -U "${target_db_user}" -h "${target_db_host}" -p "${target_db_port}" -d "${target_db_name}")
 
 
-echo "DELETE FROM mg_traits.mg_traits_jobs WHERE sample_label = '${SAMPLE_LABEL}' AND mg_url = ${MG_URL};" \
+echo "DELETE FROM mg_traits.mg_traits_jobs WHERE sample_label = '${SAMPLE_LABEL}';" \
 | psql -U "${target_db_user}" -h "${target_db_host}" -p "${target_db_port}" -d "${target_db_name}"
 
 if [[ "$?" -ne "0" ]]; then
