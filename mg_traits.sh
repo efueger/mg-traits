@@ -7,8 +7,8 @@ START_TIME=`date +%s.%N`
 echo "Environment variables:"
 
 source ~/.bashrc
-source /bioinf/home/epereira/workspace/mg-traits/config.bash
-source /bioinf/home/epereira/workspace/mg-traits/config.proxy
+source /bioinf/home/epereira/workspace/mg-traits/resources/config.bash
+source /bioinf/home/epereira/workspace/mg-traits/resources/config.proxy
 
 echo -e "\tJob ID: ${JOB_ID}"
 echo -e "\tTarget database: ${target_db_user}@${target_db_host}:${target_db_port}/${target_db_name}"
@@ -298,7 +298,7 @@ printf "Number of bases: %d\nGC content: %f\nGC variance: %f\n" "${NUM_BASES}" "
 
 mkdir split_qc && cd split_qc
 
-bash "${BIN}"/fgs_runner.sh "${NAM}" "${NSLOTS}" "${NSEQ}"
+"${fgs_runner}" "${NAM}" "${NSLOTS}" "${NSEQ}"
 ERROR_FGS=$?
 
 
@@ -317,7 +317,7 @@ cd ../
 ###########################################################################################################
 
 
-bash ${BIN}/sortmerna_runner.sh "${NAM}" "${NSLOTS}" "${RES}"
+"${sortmerna_runner}" "${NAM}" "${NSLOTS}" "${RES}"
 ERROR_SORTMERNA=$?
 
 if [[ "${ERROR_SORTMERNA}" -ne "0" ]]; then
