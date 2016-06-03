@@ -82,8 +82,7 @@ SUBMIT_TIME=${SUBMIT_TIME}\nMAKE_PUBLIC=${MAKE_PUBLIC}\nMAKE_PUBLIC=${MAKE_PUBLI
 # 1 - Check database connection
 ###########################################################################################################
 
-echo "UPDATE mg_traits.mg_traits_jobs SET time_started = now(), job_id = ${JOB_ID}, cluster_node = '${HOSTNAME}' WHERE sample_label = '${SAMPLE_LABEL}' AND id = ${MG_ID};"
-DB_RESULT=$(echo "UPDATE mg_traits.mg_traits_jobs SET time_started = now(), job_id = ${JOB_ID}, cluster_node = '${HOSTNAME}' WHERE sample_label = '${SAMPLE_LABEL}' AND id = ${MG_ID};" \
+DB_RESULT=$(echo "UPDATE mg_traits.mg_traits_jobs SET time_started = now(), job_id = ${JOB_ID}, cluster_node = ${HOSTNAME} WHERE sample_label = ${SAMPLE_LABEL} AND id = ${MG_ID};" \
 | psql -U "${target_db_user}" -h "${target_db_host}" -p "${target_db_port}" -d "${target_db_name}")
 
 if [[ "$?" -ne "0" ]]; then
@@ -104,9 +103,9 @@ fi
 echo "${MG_URL}"
 REGX='(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]'
 
-if [[ ! "${MG_URL}" =~ "${REGX}" ]]; then \
-  email_comm "Invalid URL"
-  db_error_comm "Not a valid URL WHERE sample_label = ${SAMPLE_LABEL} AND id = ${MG_ID}"
+if [[ ! "${MG_URL}" =~ "${REGX}" ]]; then 
+  email_comm "Invalid URL ${MG_URL}"
+  db_error_comm "Not a valid URL"
   exit 1
 fi 
 
