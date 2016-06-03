@@ -86,12 +86,12 @@ DB_RESULT=$(echo "UPDATE mg_traits.mg_traits_jobs SET time_started = now(), job_
 | psql -U "${target_db_user}" -h "${target_db_host}" -p "${target_db_port}" -d "${target_db_name}")
 
 if [[ "$?" -ne "0" ]]; then
-  email_comm "Cannot connect to database. Output:\n${DB_RESULT}"
+  email_comm "Cannot connect to database. Output:${DB_RESULT}"
   exit 2
 fi
 
 if [[ "$DB_RESULT" != "UPDATE 1" ]]; then
-  email_comm "sample name ${SAMPLE_LABEL} is not in database Result:\n${DB_RESULT}"  
+  email_comm "sample name ${SAMPLE_LABEL} is not in database Result:${DB_RESULT}"  
   exit 2
 fi
 
