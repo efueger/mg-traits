@@ -8,6 +8,7 @@ echo "Environment variables:"
 
 source ~/.bashrc
 source /bioinf/home/epereira/workspace/mg-traits/config.bash
+source /bioinf/home/epereira/workspace/mg-traits/config.proxy
 
 echo -e "\tJob ID: ${JOB_ID}"
 echo -e "\tTarget database: ${target_db_user}@${target_db_host}:${target_db_port}/${target_db_name}"
@@ -79,10 +80,6 @@ done
 ###########################################################################################################
 # 1 - Check database connection
 ###########################################################################################################
-
-# DB_RESULT=$(echo "UPDATE mg_traits.mg_traits_jobs SET time_started = now(), job_id = ${JOB_ID}, cluster_node = ${HOSTNAME} WHERE sample_label = ${SAMPLE_LABEL} AND id = ${MG_ID};" \
-# | psql -U "${target_db_user}" -h "${target_db_host}" -p "${target_db_port}" -d "${target_db_name}")
-
 
 DB_RESULT=$( echo "UPDATE mg_traits.mg_traits_jobs SET time_started = now(), job_id = ${JOB_ID}, cluster_node = '${HOSTNAME}' WHERE sample_label = '${SAMPLE_LABEL}' AND id = ${MG_ID};" \
 | psql -U "${target_db_user}" -h "${target_db_host}" -p "${target_db_port}" -d "${target_db_name}" )
@@ -178,7 +175,7 @@ FASTA_ERROR_CODE="$?"
 if [[ "${FASTA_ERROR_CODE}" -ne "0" ]]; then
   FASTA_BAD_HEADER=$(grep '>' "${FASTA_BAD}" | tr -d '>'); 
   
-  email_comm "${MG_URL} is not a valid FASTA file. FASTA validation failed at sequence ${FASTA_BAD_HEADER}, error: ${FASTA_ERROR_CODE}. See ${FASTA_BAD}. ${fasta_file_check} "${RAW_FASTA}" "${FASTA_BAD}""
+  email_comm "${MG_URL} is not a valid FASTA file. FASTA validation failed at sequence ${FASTA_BAD_HEADER}, error: ${FASTA_ERROR_CODE}. See ${FASTA_BAD}. ${fasta_file_check} ${RAW_FASTA} ${FASTA_BAD}"
   db_error_comm  "${MG_URL} is not a valid FASTA file. Sequence validation failed. Error: ${FASTA_ERROR_CODE}. See ${FASTA_BAD}"
   
   exit 1
