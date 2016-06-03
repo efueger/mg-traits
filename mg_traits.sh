@@ -84,6 +84,15 @@ done
 DB_RESULT=$( echo "UPDATE mg_traits.mg_traits_jobs SET time_started = now(), job_id = ${JOB_ID}, cluster_node = '${HOSTNAME}' WHERE sample_label = '${SAMPLE_LABEL}' AND id = ${MG_ID};" \
 | psql -U "${target_db_user}" -h "${target_db_host}" -p "${target_db_port}" -d "${target_db_name}" )
 
+
+############# tmp test
+email_comm  "UPDATE mg_traits.mg_traits_jobs SET time_finished = now(), return_code = 1, error_message = '${1}' WHERE sample_label = ${SAMPLE_LABEL} AND id = ${MG_ID};"
+db_error_comm hola
+exit 1;
+############# tmp test
+
+
+
 if [[ "$?" -ne "0" ]]; then
   email_comm "Cannot connect to database. Output:${DB_RESULT}"
   exit 2
