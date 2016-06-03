@@ -106,7 +106,7 @@ mkdir "${THIS_JOB_TMP_DIR}" && cd "${THIS_JOB_TMP_DIR}"
 mkdir "${THIS_JOB_TMP_DIR_DATA}" && mkdir "${SINA_LOG_DIR}"
 
 FILE=$(ls -lrt ../ | tail -2 | head -1 | awk '{ print $8}')
-rm -r $FILE
+rm -r ../$FILE
 
 echo "Logs, data and temp files will be written to:$(pwd)"
 if [[ "$(pwd)" != "${THIS_JOB_TMP_DIR}" ]]; then 
@@ -237,7 +237,7 @@ fi
 ###########################################################################################################
 
 printf "Removing duplicated sequences..."
-"${cd_hit_dup} -i "${RAW_FASTA}" -o "${UNIQUE} > "${UNIQUE_LOG}"
+"${cd_hit_dup}" -i "${RAW_FASTA}" -o "${UNIQUE}" > "${UNIQUE_LOG}"
 CD_HIT_ERROR_CODE="$?"
 
 if [[ "${CD_HIT_ERROR_CODE}" -ne "0" ]]; then 
