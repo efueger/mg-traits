@@ -172,7 +172,7 @@ fi
 ###########################################################################################################
 
 printf "Validating file..."
-"${BIN}"/fasta_file_check.pl "${RAW_FASTA}" "${FASTA_BAD}"
+"${fasta_file_check}" "${RAW_FASTA}" "${FASTA_BAD}"
 FASTA_ERROR_CODE="$?"
 
 if [[ "${FASTA_ERROR_CODE}" -ne "0" ]]; then
