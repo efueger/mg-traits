@@ -8,7 +8,6 @@ echo "Environment variables:"
 
 source ~/.bashrc
 source /bioinf/home/epereira/workspace/mg-traits/config.bash
-source /bioinf/home/epereira/workspace/mg-traits/config.proxy
 
 echo -e "\tJob ID: ${JOB_ID}"
 echo -e "\tTarget database: ${target_db_user}@${target_db_host}:${target_db_port}/${target_db_name}"
