@@ -298,7 +298,7 @@ printf "Number of bases: %d\nGC content: %f\nGC variance: %f\n" "${NUM_BASES}" "
 
 mkdir split_qc && cd split_qc
 
-"${fgs_runner}" "${NAM}" "${NSLOTS}" "${NSEQ}"
+"${fgs_runner}" "${RAW_FASTA}" "${NSLOTS}" "${NSEQ}"
 ERROR_FGS=$?
 
 
