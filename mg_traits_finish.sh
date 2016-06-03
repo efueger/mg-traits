@@ -122,7 +122,7 @@ echo "Getting functional profile..."
 echo "Running UProC on $NSLOTS cores..."
 $uproc -t $NSLOTS -p -l -O 2 -P 3 -o $PFAMFILERAW $uproc_pfam $uproc_model $GENENT 
 #exit 0
-echo $?
+#echo $?
 if [ "$?" -ne "0" ]; then
   echo "failed"
   echo "UPDATE mg_traits.mg_traits_jobs SET time_finished = now(), return_code = 2, error_message = 'UProC error. Please contact adminitrator.' WHERE sample_label = '$SAMPLE_LABEL' AND id = '$MG_ID';" | psql -U $target_db_user -h $target_db_host -p $target_db_port -d $target_db_name
