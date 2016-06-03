@@ -140,10 +140,8 @@ REGEX='(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]
   
   
 if [[ ! ${MG_URL} =~ ${REGEX} ]]; then
-  
-email_comm "Invalid URL ${MG_URL} output db: ${DB_COM} ${SAMPLE_LABEL}"
-db_error_comm "Not valid URL: ${MG_URL}";
-
+  email_comm "Invalid URL ${MG_URL} output db: ${DB_COM} ${SAMPLE_LABEL}"
+  db_error_comm "Not valid URL: ${MG_URL}";
   exit 1
 fi 
 
@@ -337,7 +335,7 @@ cd ../
 ###########################################################################################################
 
 
-"${sortmerna_runner}" "${NAM}" "${NSLOTS}" "${RES}"
+"${sortmerna_runner}" "${RAW_FASTA}" "${NSLOTS}" "${RES}"
 ERROR_SORTMERNA=$?
 
 if [[ "${ERROR_SORTMERNA}" -ne "0" ]]; then
