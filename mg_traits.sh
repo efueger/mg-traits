@@ -335,10 +335,11 @@ cd ../
 ###########################################################################################################
 
 
+mkdir sortmerna_out && cd sortmerna_out
+
 "${sortmerna_runner}" "${RAW_FASTA}" "${NSLOTS}"
 ERROR_SORTMERNA=$?
 
-mkdir sortmerna_out && cd sortmerna_out
 
 if [[ "${ERROR_SORTMERNA}" -ne "0" ]]; then
   email_comm "${sortmerna} --reads ${SE} -a ${NSLOTS} --ref ${DB}/rRNA_databases/silva-bac-16s-id90.fasta ...
