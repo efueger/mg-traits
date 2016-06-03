@@ -104,8 +104,15 @@ fi
 
 echo "This job tmp dir: ${THIS_JOB_TMP_DIR}"; 
 
+
+THIS_JOB_TMP_DIR=$(readlink -m "${RUNNING_JOBS_DIR}/job-test")
+THIS_JOB_TMP_DIR_DATA="${THIS_JOB_TMP_DIR}/data/"
+SINA_LOG_DIR="${THIS_JOB_TMP_DIR}/sina_log"
+
+rm -r "${THIS_JOB_TMP_DIR}"
 mkdir "${THIS_JOB_TMP_DIR}" && cd "${THIS_JOB_TMP_DIR}"
 mkdir "${THIS_JOB_TMP_DIR_DATA}" && mkdir "${SINA_LOG_DIR}"
+
 
 echo "Logs, data and temp files will be written to:$(pwd)"
 if [[ "$(pwd)" != "${THIS_JOB_TMP_DIR}" ]]; then 
@@ -129,17 +136,6 @@ if [[ ! ${MG_URL} =~ ${REGEX} ]]; then
   db_error_comm "Not a valid URL"
   exit 1
 fi 
-
-
-
-echo "DELETE FROM mg_traits.mg_traits_jobs WHERE sample_label = '${SAMPLE_LABEL}';" \
-| psql -U "${target_db_user}" -h "${target_db_host}" -p "${target_db_port}" -d "${target_db_name}"
-
-if [[ "$?" -ne "0" ]]; then
-
-  email_comm "no delete"
-  
-fi  
 
 
 
