@@ -125,7 +125,12 @@ fi
 echo "${MG_URL}"
 REGEX='(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]'
 
+function db_error_comm() {
+  echo "UPDATE mg_traits.mg_traits_jobs SET time_finished = now(), return_code = 1, error_message = '$1' \
+  WHERE sample_label = '${SAMPLE_LABEL}';" | psql -U "${target_db_user}" -h "${target_db_host}" -p "${target_db_port}" -d "${target_db_name}"
 
+}  
+  
   
 if [[ ! ${MG_URL} =~ ${REGEX} ]]; then
   
