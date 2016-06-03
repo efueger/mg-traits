@@ -208,7 +208,7 @@ echo "${PFAM_ACCESSIONS_URL}"
 curl -s "${PFAM_ACCESSIONS_URL}" > "${PFAM_ACCESSIONS}"
 
 if [[ "$?" -ne "0" ]]; then
-  email_comm "Could not retrieve ${PFAM_ACCESSIONS_URL}"
+  email_comm "Could not retrieve ${PFAM_ACCESSIONS_URL} $http_proxy"
   db_error_comm "Could not retrieve ${PFAM_ACCESSIONS_URL}"
   exit 1; 
 fi
