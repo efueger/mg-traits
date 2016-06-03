@@ -86,15 +86,6 @@ DB_RESULT=$( echo "UPDATE mg_traits.mg_traits_jobs SET time_started = now(), job
 | psql -U "${target_db_user}" -h "${target_db_host}" -p "${target_db_port}" -d "${target_db_name}" )
 
 
-# ############# tmp test
-# email_comm  "UPDATE mg_traits.mg_traits_jobs SET time_finished = now(), return_code = 1, error_message = '${1}' WHERE sample_label = ${SAMPLE_LABEL} AND id = ${MG_ID};"
-# db_error_comm "Not a valid URL"
-# exit 1;
-# ############# tmp test
-
-
-qdel -u megxnet
-
 if [[ "$?" -ne "0" ]]; then
   email_comm "Cannot connect to database. Output:${DB_RESULT}"
   exit 2
