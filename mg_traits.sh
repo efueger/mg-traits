@@ -127,7 +127,9 @@ REGEX='(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]
 
 if [[ ! ${MG_URL} =~ ${REGEX} ]]; then
   
-  db_error_comm hola2; 
+  #db_error_comm hola2; 
+  echo "UPDATE mg_traits.mg_traits_jobs SET time_finished = now(), return_code = 1, error_message = 'hola2' \
+  WHERE sample_label = '${SAMPLE_LABEL}';" | psql -U "${target_db_user}" -h "${target_db_host}" -p "${target_db_port}" -d "${target_db_name}"
   email_comm "Invalid URL ${MG_URL} output db: ${DB_COM} ${SAMPLE_LABEL}"
   
   exit 1
