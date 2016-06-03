@@ -127,7 +127,7 @@ REGEX='(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]
 
 if [[ ! ${MG_URL} =~ ${REGEX} ]]; then
   
-  DB_COM=$( db_error_com "Not a valid URL" ) 
+  DB_COM=$( db_error_comm hola ) 
   email_comm "Invalid URL ${MG_URL} output db: $DB_COM"
   
   exit 1
