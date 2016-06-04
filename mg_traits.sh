@@ -295,7 +295,7 @@ Rscript --vanilla "${seq_stats}" "${INFOSEQ_TMPFILE}" > "${INFOSEQ_MGSTATS}"
 SEQ_STATS_ERROR_CODE="$?"
 
 if [[ "${SEQ_STATS_ERROR_CODE}" -ne "0" ]]; then 
-  email_comm "Rscript --vanilla "${seq_stats}" "${INFOSEQ_TMPFILE}" "${INFOSEQ_MGSTATS}"
+  email_comm "Rscript --vanilla ${seq_stats} ${INFOSEQ_TMPFILE} ${INFOSEQ_MGSTATS}
 exited with RC ${SEQ_STATS_ERROR_CODE} in job ${JOB_ID}. Infoseq script. Files are at: ${FAILED_JOBS_DIR}/job-${JOB_ID}"
   db_error_comm "Cannot process sequence statistics. Please contact adminitrator."
   exit 2; 
