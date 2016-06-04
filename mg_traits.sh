@@ -315,46 +315,47 @@ email_comm "${NUM_BASES} ${GC} ${VARGC}"
 
 
 qdel -u megxnet 
-
-mkdir split_qc && cd split_qc
-#Split original
-awk -vn="${NSEQ}" 'BEGIN {n_seq=0;partid=1;} /^>/ {if(n_seq%n==0){file=sprintf("05-part-%d.fasta",partid);partid++;} print >> file; n_seq++; next;} { print >> file; }' < ../"${RAW_FASTA}"
-NFILES=$(ls -1 05-part*.fasta | wc -l)
-
-"${fgs_runner}" "${NSLOTS}" "${NFILES}"
-
-ERROR_FGS=$?
-
-if [[ "${ERROR_FGS}" -ne "0" ]]; then
-  email_comm  "${frag_gene_scan} -genome=${IN_FASTA_FILE} -out=${IN_FASTA_FILE}.genes10 -complete=0 -train=sanger_10
-exited with RC ${ERROR_FGS} in job ${JOB_ID}"
-  db_error_comm "FragGeneScan failed. Please contact adminitrator."
-  exit 2
-fi
-
-cd ../
-
-
-###########################################################################################################
-# 2 - run sortmerna
-###########################################################################################################
-
-
-#mkdir sortmerna_out && cd sortmerna_out
-
-${sortmerna_runner} "${RAW_FASTA}" "${NSLOTS}"
-
-
-if [[ "${ERROR_SORTMERNA}" -ne "0" ]]; then
-  email_comm "${sortmerna} --reads ${RAW_FASTA} -a ${NSLOTS} --ref ${DB}/rRNA_databases/silva-bac-16s-id90.fasta ...
-exited with RC ${ERROR_SORTMERNA} in job ${JOB_ID}."
-  db_error_comm "sortmerna failed. Please contact adminitrator"
-  exit 2
-fi
-
-cd ../
-
-
+# 
+# mkdir split_qc && cd split_qc
+# #Split original
+# awk -vn="${NSEQ}" 'BEGIN {n_seq=0;partid=1;} /^>/ {if(n_seq%n==0){file=sprintf("05-part-%d.fasta",partid);partid++;} print >> file; n_seq++; next;} { print >> file; }' < ../"${RAW_FASTA}"
+# NFILES=$(ls -1 05-part*.fasta | wc -l)
+# 
+# 
+# "${fgs_runner}" "${NSLOTS}" "${NFILES}"
+# 
+# ERROR_FGS=$?
+# 
+# if [[ "${ERROR_FGS}" -ne "0" ]]; then
+#   email_comm  "${frag_gene_scan} -genome=${IN_FASTA_FILE} -out=${IN_FASTA_FILE}.genes10 -complete=0 -train=sanger_10
+# exited with RC ${ERROR_FGS} in job ${JOB_ID}"
+#   db_error_comm "FragGeneScan failed. Please contact adminitrator."
+#   exit 2
+# fi
+# 
+# cd ../
+# 
+# 
+# ###########################################################################################################
+# # 2 - run sortmerna
+# ###########################################################################################################
+# 
+# 
+# #mkdir sortmerna_out && cd sortmerna_out
+# 
+# ${sortmerna_runner} "${RAW_FASTA}" "${NSLOTS}"
+# 
+# 
+# if [[ "${ERROR_SORTMERNA}" -ne "0" ]]; then
+#   email_comm "${sortmerna} --reads ${RAW_FASTA} -a ${NSLOTS} --ref ${DB}/rRNA_databases/silva-bac-16s-id90.fasta ...
+# exited with RC ${ERROR_SORTMERNA} in job ${JOB_ID}."
+#   db_error_comm "sortmerna failed. Please contact adminitrator"
+#   exit 2
+# fi
+# 
+# cd ../
+# 
+# 
 ###########################################################################################################
 # 3 - run SINA
 ###########################################################################################################
