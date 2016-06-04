@@ -314,7 +314,6 @@ email_comm "${NUM_BASES} ${GC} ${VARGC}"
 ###########################################################################################################
 
 
-qdel -u megxnet 
 # 
 # mkdir split_qc && cd split_qc
 # #Split original
