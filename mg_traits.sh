@@ -306,7 +306,6 @@ GC=$(cut -f2 "${INFOSEQ_MGSTATS}" -d ' ');
 VARGC=$(cut -f3 "${INFOSEQ_MGSTATS}" -d ' ')
 printf "Number of bases: %d\nGC content: %f\nGC variance: %f\n" "${NUM_BASES}" "${GC}" "${VARGC}"
 
-email_comm "${NUM_BASES} ${GC} ${VARGC}"
 
 
 ###########################################################################################################
@@ -314,13 +313,20 @@ email_comm "${NUM_BASES} ${GC} ${VARGC}"
 ###########################################################################################################
 
 
-# 
-# mkdir split_qc && cd split_qc
-# #Split original
-# awk -vn="${NSEQ}" 'BEGIN {n_seq=0;partid=1;} /^>/ {if(n_seq%n==0){file=sprintf("05-part-%d.fasta",partid);partid++;} print >> file; n_seq++; next;} { print >> file; }' < ../"${RAW_FASTA}"
-# NFILES=$(ls -1 05-part*.fasta | wc -l)
-# 
-# 
+
+mkdir split_qc && cd split_qc
+#Split original
+awk -vn="${NSEQ}" 'BEGIN {n_seq=0;partid=1;} /^>/ {if(n_seq%n==0){file=sprintf("05-part-%d.fasta",partid);partid++;} print >> file; n_seq++; next;} { print >> file; }' < ../"${RAW_FASTA}"
+
+
+if [[ "$?" -ne "0" ]]; then 
+  email_comm error_tmp
+  db_error_comm error_tmp
+fi  
+
+
+NFILES=$(ls -1 05-part*.fasta | wc -l)
+
 # "${fgs_runner}" "${NSLOTS}" "${NFILES}"
 # 
 # ERROR_FGS=$?
@@ -334,7 +340,7 @@ email_comm "${NUM_BASES} ${GC} ${VARGC}"
 # 
 # cd ../
 # 
-# 
+
 # ###########################################################################################################
 # # 2 - run sortmerna
 # ###########################################################################################################
