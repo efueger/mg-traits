@@ -291,7 +291,7 @@ fi
 
 
 # seq stats
-Rscript --vanilla "${seq_stats}" "${INFOSEQ_TMPFILE}" > "${INFOSEQ_MGSTATS}"
+Rscript --vanilla "${seq_stats}" "${INFOSEQ_TMPFILE}" "${INFOSEQ_MGSTATS}"
 SEQ_STATS_ERROR_CODE="$?"
 
 if [[ "${SEQ_STATS_ERROR_CODE}" -ne "0" ]]; then 
