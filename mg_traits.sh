@@ -319,13 +319,14 @@ mkdir split_qc && cd split_qc
 awk -vn="${NSEQ}" 'BEGIN {n_seq=0;partid=1;} /^>/ {if(n_seq%n==0){file=sprintf("05-part-%d.fasta",partid);partid++;} print >> file; n_seq++; next;} { print >> file; }' < ../"${RAW_FASTA}"
 NFILES=$(ls -1 05-part*.fasta | wc -l)
 
-"${fgs_runner}" "${NSLOTS}" "${NFILES}"
+#"${fgs_runner}" "${NSLOTS}" "${NFILES}"
 
 
-if [[ "$?" -ne "0" ]]; then 
-  email_comm error_tmp
-  db_error_comm error_tmp
-fi 
+
+# if [[ "$?" -ne "0" ]]; then 
+#   email_comm error_tmp
+#   db_error_comm error_tmp
+# fi 
 
 # 
 # ERROR_FGS=$?
@@ -345,19 +346,18 @@ fi
 # ###########################################################################################################
 # 
 # 
-# #mkdir sortmerna_out && cd sortmerna_out
-# 
-# ${sortmerna_runner} "${RAW_FASTA}" "${NSLOTS}"
-# 
-# 
-# if [[ "${ERROR_SORTMERNA}" -ne "0" ]]; then
-#   email_comm "${sortmerna} --reads ${RAW_FASTA} -a ${NSLOTS} --ref ${DB}/rRNA_databases/silva-bac-16s-id90.fasta ...
-# exited with RC ${ERROR_SORTMERNA} in job ${JOB_ID}."
-#   db_error_comm "sortmerna failed. Please contact adminitrator"
-#   exit 2
-# fi
-# 
-# cd ../
+#mkdir sortmerna_out && cd sortmerna_out
+
+${sortmerna_runner} "${RAW_FASTA}" "${NSLOTS}"
+
+if [[ "${ERROR_SORTMERNA}" -ne "0" ]]; then
+  email_comm "${sortmerna} --reads ${RAW_FASTA} -a ${NSLOTS} --ref ${DB}/rRNA_databases/silva-bac-16s-id90.fasta ...
+exited with RC ${ERROR_SORTMERNA} in job ${JOB_ID}."
+  db_error_comm "sortmerna failed. Please contact adminitrator"
+  exit 2
+fi
+
+cd ../
 # 
 # 
 ###########################################################################################################
