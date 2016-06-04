@@ -348,7 +348,20 @@ NFILES=$(ls -1 05-part*.fasta | wc -l)
 # 
 #mkdir sortmerna_out && cd sortmerna_out
 
-${sortmerna_runner} "${RAW_FASTA}" "${NSLOTS}"
+
+
+sortmerna="/bioinf/software/sortmerna/sortmerna-2.0/bin/sortmerna"
+DB="/bioinf/software/sortmerna/sortmerna-2.0/"
+#MEM=$(free -m | grep Mem | awk '{printf "%d",$2/3}')
+MEM=4000
+$sortmerna --reads "${RAW_FASTA}" -a ${NSLOTS} --ref \
+${DB}/rRNA_databases/silva-bac-16s-id90.fasta,\
+${DB}/index/silva-bac-16s-db:${DB}/rRNA_databases/silva-arc-16s-id95.fasta,\
+${DB}/index/silva-arc-16s-db:${DB}/rRNA_databases/silva-euk-18s-id95.fasta,\
+${DB}/index/silva-euk-18s-db --blast 1 --fastx --aligned sortmerna.rDNA -v --log -m ${MEM} --best 1 > sortmerna.log
+
+
+#${sortmerna_runner} "${RAW_FASTA}" "${NSLOTS}"
 
 if [[ "${ERROR_SORTMERNA}" -ne "0" ]]; then
   email_comm "${sortmerna} --reads ${RAW_FASTA} -a ${NSLOTS} --ref ${DB}/rRNA_databases/silva-bac-16s-id90.fasta ...
