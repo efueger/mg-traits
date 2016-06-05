@@ -116,6 +116,7 @@ echo "This job tmp dir: ${THIS_JOB_TMP_DIR}";
 
 rm -r ${THIS_JOB_TMP_DIR}  # CHANGE THIS FOR REAL DATA!!!!!!!!!!
 mkdir "${THIS_JOB_TMP_DIR}" && cd "${THIS_JOB_TMP_DIR}"
+rm -r ../split_smr
 mkdir "${THIS_JOB_TMP_DIR_DATA}" && mkdir "${SINA_LOG_DIR}"
 
 
@@ -319,34 +320,32 @@ mkdir split_qc && cd split_qc
 awk -vn="${NSEQ}" 'BEGIN {n_seq=0;partid=1;} /^>/ {if(n_seq%n==0){file=sprintf("05-part-%d.fasta",partid);partid++;} print >> file; n_seq++; next;} { print >> file; }' < ../"${RAW_FASTA}"
 NFILES=$(ls -1 05-part*.fasta | wc -l)
 
-#"${fgs_runner}" "${NSLOTS}" "${NFILES}"
+"${fgs_runner}" "${NSLOTS}" "${NFILES}"
+
+ERROR_FGS=$?
+
+if [[ "${ERROR_FGS}" -ne "0" ]]; then
+  email_comm  "${frag_gene_scan} -genome=${IN_FASTA_FILE} -out=${IN_FASTA_FILE}.genes10 -complete=0 -train=sanger_10
+exited with RC ${ERROR_FGS} in job ${JOB_ID}"
+  db_error_comm "FragGeneScan failed. Please contact adminitrator."
+  exit 2
+fi
+
+cd ../
 
 
+# ###########################################################################################################
+# # 2 - run sortmerna
+# ###########################################################################################################
+# 
 
 # if [[ "$?" -ne "0" ]]; then 
 #   email_comm error_tmp
 #   db_error_comm error_tmp
 # fi 
 
-# 
-# ERROR_FGS=$?
-# 
-# if [[ "${ERROR_FGS}" -ne "0" ]]; then
-#   email_comm  "${frag_gene_scan} -genome=${IN_FASTA_FILE} -out=${IN_FASTA_FILE}.genes10 -complete=0 -train=sanger_10
-# exited with RC ${ERROR_FGS} in job ${JOB_ID}"
-#   db_error_comm "FragGeneScan failed. Please contact adminitrator."
-#   exit 2
-# fi
-# 
-# cd ../
-# 
 
-# ###########################################################################################################
-# # 2 - run sortmerna
-# ###########################################################################################################
-# 
-# 
-#mkdir sortmerna_out && cd sortmerna_out
+mkdir sortmerna_out && cd sortmerna_out
 
 
 
