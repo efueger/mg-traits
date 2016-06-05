@@ -87,6 +87,7 @@ function db_error_comm() {
   WHERE sample_label = '${SAMPLE_LABEL}' AND id = '${MG_ID}';" | psql -U "${target_db_user}" -h "${target_db_host}" -p "${target_db_port}" -d "${target_db_name}"
 }
 
+email_comm "hola"
 
 ###########################################################################################################
 # 1 - Check database connection
