@@ -87,7 +87,7 @@ function db_error_comm() {
   WHERE sample_label = '${SAMPLE_LABEL}' AND id = '${MG_ID}';" | psql -U "${target_db_user}" -h "${target_db_host}" -p "${target_db_port}" -d "${target_db_name}"
 }
 
-email_comm "hola"
+
 
 ###########################################################################################################
 # 1 - Check database connection
@@ -137,9 +137,6 @@ fi
 # validate MG URL 
 echo "${MG_URL}"
 REGEX='(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]'
-
-  
-  
   
 if [[ ! ${MG_URL} =~ ${REGEX} ]]; then
   email_comm "Invalid URL ${MG_URL} output db: ${DB_COM} ${SAMPLE_LABEL}"
@@ -346,7 +343,7 @@ cd ../
 # fi 
 
 
-mkdir sortmerna_out && cd sortmerna_out
+#mkdir sortmerna_out && cd sortmerna_out
 
 
 
@@ -370,7 +367,7 @@ exited with RC ${ERROR_SORTMERNA} in job ${JOB_ID}."
   exit 2
 fi
 
-cd ../
+#cd ../
 # 
 # 
 ###########################################################################################################
