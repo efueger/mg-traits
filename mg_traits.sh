@@ -305,31 +305,29 @@ GC=$(cut -f2 "${INFOSEQ_MGSTATS}" -d ' ');
 VARGC=$(cut -f3 "${INFOSEQ_MGSTATS}" -d ' ')
 printf "Number of bases: %d\nGC content: %f\nGC variance: %f\n" "${NUM_BASES}" "${GC}" "${VARGC}"
 
-email_comm "${NUM_BASES} ${GC} ${VARGC}"
-
 
 ###########################################################################################################
 # 1 - run fgs
 ###########################################################################################################
 
 
-mkdir split_qc && cd split_qc
-#Split original
-awk -vn="${NSEQ}" 'BEGIN {n_seq=0;partid=1;} /^>/ {if(n_seq%n==0){file=sprintf("05-part-%d.fasta",partid);partid++;} print >> file; n_seq++; next;} { print >> file; }' < ../"${RAW_FASTA}"
-NFILES=$(ls -1 05-part*.fasta | wc -l)
-
-"${fgs_runner}" "${NSLOTS}" "${NFILES}"
-
-ERROR_FGS=$?
-
-if [[ "${ERROR_FGS}" -ne "0" ]]; then
-  email_comm  "${frag_gene_scan} -genome=${IN_FASTA_FILE} -out=${IN_FASTA_FILE}.genes10 -complete=0 -train=sanger_10
-exited with RC ${ERROR_FGS} in job ${JOB_ID}"
-  db_error_comm "FragGeneScan failed. Please contact adminitrator."
-  exit 2
-fi
-
-cd ../
+# mkdir split_qc && cd split_qc
+# #Split original
+# awk -vn="${NSEQ}" 'BEGIN {n_seq=0;partid=1;} /^>/ {if(n_seq%n==0){file=sprintf("05-part-%d.fasta",partid);partid++;} print >> file; n_seq++; next;} { print >> file; }' < ../"${RAW_FASTA}"
+# NFILES=$(ls -1 05-part*.fasta | wc -l)
+# 
+# "${fgs_runner}" "${NSLOTS}" "${NFILES}"
+# 
+# ERROR_FGS=$?
+# 
+# if [[ "${ERROR_FGS}" -ne "0" ]]; then
+#   email_comm  "${frag_gene_scan} -genome=${IN_FASTA_FILE} -out=${IN_FASTA_FILE}.genes10 -complete=0 -train=sanger_10
+# exited with RC ${ERROR_FGS} in job ${JOB_ID}"
+#   db_error_comm "FragGeneScan failed. Please contact adminitrator."
+#   exit 2
+# fi
+# 
+# cd ../
 
 
 # ###########################################################################################################
