@@ -312,7 +312,7 @@ printf "Number of bases: %d\nGC content: %f\nGC variance: %f\n" "${NUM_BASES}" "
 
 
 #Split original
-awk -vn="${NSEQ}" 'BEGIN {n_seq=0;partid=1;} /^>/ {if(n_seq%n==0){file=sprintf("05-part-%d.fasta",partid);partid++;} print >> file; n_seq++; next;} { print >> file; }' < ../"${RAW_FASTA}"
+awk -vn="${NSEQ}" 'BEGIN {n_seq=0;partid=1;} /^>/ {if(n_seq%n==0){file=sprintf("05-part-%d.fasta",partid);partid++;} print >> file; n_seq++; next;} { print >> file; }' < "${RAW_FASTA}"
 NFILES=$(ls -1 05-part*.fasta | wc -l)
 
 "${fgs_runner}" "${NSLOTS}" "${NFILES}"
@@ -354,7 +354,7 @@ fi
 # 3 - run SINA
 ###########################################################################################################
 
-awk -vn="${nSEQ}" 'BEGIN {n_seq=0;partid=1;} /^>/ {if(n_seq%n==0){file=sprintf("06-part-%d.fasta",partid);partid++;} print >> file; n_seq++; next;} { print >> file; }' < ../"${SORMERNA_OUT}".fasta
+awk -vn="${nSEQ}" 'BEGIN {n_seq=0;partid=1;} /^>/ {if(n_seq%n==0){file=sprintf("06-part-%d.fasta",partid);partid++;} print >> file; n_seq++; next;} { print >> file; }' < "${SORMERNA_OUT}".fasta
 
 nFILES=$(ls -1 06-part*.fasta | wc -l)
  
