@@ -23,6 +23,8 @@ echo -e "\tMG traits dir: ${mg_traits_dir}"
 echo -e "\tJob out dir: ${job_out_dir}"
 echo -e "\tMT admin mail: ${mt_admin_mail}"
 
+qdel -u megxnet
+
 
 ###########################################################################################################
 # 0 - Parse parameters
