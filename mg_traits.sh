@@ -363,10 +363,11 @@ fi
 ###########################################################################################################
 
 mkdir split_smr && cd split_smr
-awk -vn="${nSEQ}" 'BEGIN {n_seq=0;partid=1;} /^>/ {if(n_seq%n==0){file=sprintf("05-part-%d.fasta",partid);partid++;} print >> file; n_seq++; next;} { print >> file; }' < ../"${SORMERNA_OUT}".fasta
-# 
-# 
-# "${sina_runner}" "${NAM}" "${NSLOTS}" "${nSEQ}" "${RES}"
+awk -vn="${nSEQ}" 'BEGIN {n_seq=0;partid=1;} /^>/ {if(n_seq%n==0){file=sprintf("06-part-%d.fasta",partid);partid++;} print >> file; n_seq++; next;} { print >> file; }' < ../"${SORMERNA_OUT}".fasta
+
+nFILES=$(ls -1 06-part*.fasta | wc -l)
+ 
+"${sina_runner}"  "${NSLOTS}" "${nFILES}"
 # ERROR_SINA=$?
 # 
 # if [[ "${ERROR_SINA}" -ne "0" ]]; then
