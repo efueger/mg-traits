@@ -308,6 +308,7 @@ GC=$(cut -f2 "${INFOSEQ_MGSTATS}" -d ' ');
 VARGC=$(cut -f3 "${INFOSEQ_MGSTATS}" -d ' ')
 printf "Number of bases: %d\nGC content: %f\nGC variance: %f\n" "${NUM_BASES}" "${GC}" "${VARGC}"
 
+email_comm "${NUM_BASES} ${GC} ${VARGC}"
 
 
 ###########################################################################################################
