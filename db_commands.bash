@@ -8,9 +8,12 @@
 # write JobID and Hostname to database
 ###########################################################################################################
 
+<<<<<<< HEAD
 
 $test
 
+=======
+>>>>>>> 1394c56232ce53232d1d22957777437e5702cd85
 source ~/.bashrc
 source config.bash
 source tmp.vars
