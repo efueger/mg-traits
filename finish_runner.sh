@@ -35,6 +35,8 @@ function db_pca_load() {
 # 1 - Check job array results: should be done in mg_traits
 ###########################################################################################################
 
+email_comm "my finish_runner"
+
 FAA_RESULTS=$(ls -1 05-part*.faa | wc -l)
 FFN_RESULTS=$(ls -1 05-part*.ffn | wc -l)
 SLV_CLASSIFY_RESULTS=$(ls -1 05-part-*.screen.fasta | wc -l)
