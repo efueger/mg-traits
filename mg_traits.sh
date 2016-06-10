@@ -132,6 +132,7 @@ echo ARBHOME=$ARBHOME >> 00-environment
 echo LD_LIBRARY_PATH=$LD_LIBRARY_PATH >> 00-environment
 
 
+email_comm "running runner_finish"
 qsub -pe threaded 8 -l h=\!mg32 -N $FINISHJOBID -o $THIS_JOB_TMP_DIR -e $THIS_JOB_TMP_DIR -l ga -j y -terse -P megx.p -R y -m sa -M $mt_admin_mail -hold_jid $FGS_JOBARRAYID,$SINA_JOBARRAYID  /bioinf/home/epereira/workspace/mg-traits/resources/finish_runner.sh $THIS_JOB_TMP_DIR
 
 
