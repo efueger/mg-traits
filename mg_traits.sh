@@ -311,34 +311,26 @@ printf "Number of bases: %d\nGC content: %f\nGC variance: %f\n" "${NUM_BASES}" "
 ###########################################################################################################
 
 
-# mkdir split_qc && cd split_qc
-# #Split original
-# awk -vn="${NSEQ}" 'BEGIN {n_seq=0;partid=1;} /^>/ {if(n_seq%n==0){file=sprintf("05-part-%d.fasta",partid);partid++;} print >> file; n_seq++; next;} { print >> file; }' < ../"${RAW_FASTA}"
-# NFILES=$(ls -1 05-part*.fasta | wc -l)
-# 
-# "${fgs_runner}" "${NSLOTS}" "${NFILES}"
-# 
-# ERROR_FGS=$?
-# 
-# if [[ "${ERROR_FGS}" -ne "0" ]]; then
-#   email_comm  "${frag_gene_scan} -genome=${IN_FASTA_FILE} -out=${IN_FASTA_FILE}.genes10 -complete=0 -train=sanger_10
-# exited with RC ${ERROR_FGS} in job ${JOB_ID}"
-#   db_error_comm "FragGeneScan failed. Please contact adminitrator."
-#   exit 2
-# fi
-# 
-# cd ../
+#Split original
+awk -vn="${NSEQ}" 'BEGIN {n_seq=0;partid=1;} /^>/ {if(n_seq%n==0){file=sprintf("05-part-%d.fasta",partid);partid++;} print >> file; n_seq++; next;} { print >> file; }' < ../"${RAW_FASTA}"
+NFILES=$(ls -1 05-part*.fasta | wc -l)
+
+"${fgs_runner}" "${NSLOTS}" "${NFILES}"
+
+ERROR_FGS=$?
+
+if [[ "${ERROR_FGS}" -ne "0" ]]; then
+  email_comm  "${frag_gene_scan} -genome=${IN_FASTA_FILE} -out=${IN_FASTA_FILE}.genes10 -complete=0 -train=sanger_10
+exited with RC ${ERROR_FGS} in job ${JOB_ID}"
+  db_error_comm "FragGeneScan failed. Please contact adminitrator."
+  exit 2
+fi
+
 
 
 # ###########################################################################################################
 # # 2 - run sortmerna
 # ###########################################################################################################
-
-
-# if [[ "$?" -ne "0" ]]; then 
-#   email_comm error_tmp
-#   db_error_comm error_tmp
-# fi 
 
 
 #MEM=$(free -m | grep Mem | awk '{printf "%d",$2/3}')
@@ -362,21 +354,28 @@ fi
 # 3 - run SINA
 ###########################################################################################################
 
-mkdir split_smr && cd split_smr
 awk -vn="${nSEQ}" 'BEGIN {n_seq=0;partid=1;} /^>/ {if(n_seq%n==0){file=sprintf("06-part-%d.fasta",partid);partid++;} print >> file; n_seq++; next;} { print >> file; }' < ../"${SORMERNA_OUT}".fasta
 
 nFILES=$(ls -1 06-part*.fasta | wc -l)
  
 "${sina_runner}"  "${NSLOTS}" "${nFILES}"
-# ERROR_SINA=$?
-# 
-# if [[ "${ERROR_SINA}" -ne "0" ]]; then
-#   email_comm "${sina} -i ${RES}/split_smr/spout_\${SGE_TASK_ID} -o ${RES}/split_smr/\${SGE_TASK_ID}.16S.align.fasta ...
-# exited with RC ${ERROR_SINA} in job ${JOB_ID}."
-#   db_error_comm "sina failed. Please contact adminitrator"
-#   exit 2
-# fi
-# cd ../
-# 
-# 
-# END_TIME=`date +%s.%N`
+ ERROR_SINA=$?
+
+if [[ "${ERROR_SINA}" -ne "0" ]]; then
+  email_comm "${sina} -i ${RES}/split_smr/spout_\${SGE_TASK_ID} -o ${RES}/split_smr/\${SGE_TASK_ID}.16S.align.fasta ...
+exited with RC ${ERROR_SINA} in job ${JOB_ID}."
+  db_error_comm "sina failed. Please contact adminitrator"
+  exit 2
+fi
+
+
+###########################################################################################################
+# 4 - Finish Jobs
+###########################################################################################################
+
+
+qsub -pe threaded 8 -l h=\!mg32 -N $FINISHJOBID -o $THIS_JOB_TMP_DIR -e $THIS_JOB_TMP_DIR -l ga -j y -terse -P megx.p -R y -m sa -M $mt_admin_mail -hold_jid $FGS_JOBARRAYID,$SINA_JOBARRAYID $mg_traits_dir/mg_traits_finish.sh $THIS_JOB_TMP_DIR
+
+
+
+END_TIME=`date +%s.%N`
