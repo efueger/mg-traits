@@ -2,7 +2,7 @@
 set -x
 set -o pipefail
 
-trap cleanup EXIT
+#trap cleanup EXIT
 
 cd $WORK_DIR
 
