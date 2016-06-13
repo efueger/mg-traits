@@ -24,8 +24,6 @@ echo -e "\tJob out dir: ${job_out_dir}"
 echo -e "\tMT admin mail: ${mt_admin_mail}"
 
 
-email_comm "hola"
-
 
 ###########################################################################################################
 # 0 - Parse parameters
