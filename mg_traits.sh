@@ -354,7 +354,7 @@ fi
 # 3 - run SINA
 ###########################################################################################################
 
-awk -vn="${nSEQ}" 'BEGIN {n_seq=0;partid=1;} /^>/ {if(n_seq%n==0){file=sprintf("06-part_-%d.fasta",partid);partid++;} print >> file; n_seq++; next;} { print >> file; }' < "${SORTMERNA_OUT}".fasta
+awk -vn="${nSEQ}" 'BEGIN {n_seq=0;partid=1;} /^>/ {if(n_seq%n==0){file=sprintf("06-part-%d.fasta",partid);partid++;} print >> file; n_seq++; next;} { print >> file; }' < "${SORTMERNA_OUT}".fasta
 nFILES=$(ls -1 06-part*.fasta | wc -l)
 
 "${sina_runner}" "${NSLOTS}" "${nFILES}" 
