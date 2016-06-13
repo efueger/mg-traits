@@ -313,10 +313,8 @@ printf "Number of bases: %d\nGC content: %f\nGC variance: %f\n" "${NUM_BASES}" "
 ###########################################################################################################
 
 
-
-mkdir split_qc && cd split_qc
 #Split original
-awk -vn="${NSEQ}" 'BEGIN {n_seq=0;partid=1;} /^>/ {if(n_seq%n==0){file=sprintf("05-part-%d.fasta",partid);partid++;} print >> file; n_seq++; next;} { print >> file; }' < ../"${RAW_FASTA}"
+awk -vn="${NSEQ}" 'BEGIN {n_seq=0;partid=1;} /^>/ {if(n_seq%n==0){file=sprintf("05-part-%d.fasta",partid);partid++;} print >> file; n_seq++; next;} { print >> file; }' < "${RAW_FASTA}"
 NFILES=$(ls -1 05-part*.fasta | wc -l)
 
 "${fgs_runner}" "${NSLOTS}" "${NFILES}"
@@ -330,36 +328,20 @@ exited with RC ${ERROR_FGS} in job ${JOB_ID}"
   exit 2
 fi
 
-cd ../
 
 
 # ###########################################################################################################
 # # 2 - run sortmerna
 # ###########################################################################################################
-# 
 
-# if [[ "$?" -ne "0" ]]; then 
-#   email_comm error_tmp
-#   db_error_comm error_tmp
-# fi 
-
-
-#mkdir sortmerna_out && cd sortmerna_out
-
-
-
-sortmerna="/bioinf/software/sortmerna/sortmerna-2.0/bin/sortmerna"
-DB="/bioinf/software/sortmerna/sortmerna-2.0/"
 #MEM=$(free -m | grep Mem | awk '{printf "%d",$2/3}')
 MEM=4000
 $sortmerna --reads "${RAW_FASTA}" -a ${NSLOTS} --ref \
 ${DB}/rRNA_databases/silva-bac-16s-id90.fasta,\
 ${DB}/index/silva-bac-16s-db:${DB}/rRNA_databases/silva-arc-16s-id95.fasta,\
 ${DB}/index/silva-arc-16s-db:${DB}/rRNA_databases/silva-euk-18s-id95.fasta,\
-${DB}/index/silva-euk-18s-db --blast 1 --fastx --aligned sortmerna.rDNA -v --log -m ${MEM} --best 1 > sortmerna.log
+${DB}/index/silva-euk-18s-db --blast 1 --fastx --aligned "${SORTMERNA_OUT}" -v --log -m ${MEM} --best 1 > sortmerna.log
 
-
-#${sortmerna_runner} "${RAW_FASTA}" "${NSLOTS}"
 
 if [[ "${ERROR_SORTMERNA}" -ne "0" ]]; then
   email_comm "${sortmerna} --reads ${RAW_FASTA} -a ${NSLOTS} --ref ${DB}/rRNA_databases/silva-bac-16s-id90.fasta ...
@@ -368,27 +350,21 @@ exited with RC ${ERROR_SORTMERNA} in job ${JOB_ID}."
   exit 2
 fi
 
-#cd ../
-# 
-# 
 ###########################################################################################################
 # 3 - run SINA
 ###########################################################################################################
 
-# mkdir split_smr && cd split_smr
-# awk -vn="${nSEQ}" 'BEGIN {n_seq=0;partid=1;} /^>/ {if(n_seq%n==0){file=sprintf("05-part-%d.fasta",partid);partid++;} print >> file; n_seq++; next;} { print >> file; }' < ../"${RAW_FASTA}"
-# 
-# 
-# "${sina_runner}" "${NAM}" "${NSLOTS}" "${nSEQ}" "${RES}"
-# ERROR_SINA=$?
-# 
-# if [[ "${ERROR_SINA}" -ne "0" ]]; then
-#   email_comm "${sina} -i ${RES}/split_smr/spout_\${SGE_TASK_ID} -o ${RES}/split_smr/\${SGE_TASK_ID}.16S.align.fasta ...
-# exited with RC ${ERROR_SINA} in job ${JOB_ID}."
-#   db_error_comm "sina failed. Please contact adminitrator"
-#   exit 2
-# fi
-# cd ../
-# 
-# 
+awk -vn="${nSEQ}" 'BEGIN {n_seq=0;partid=1;} /^>/ {if(n_seq%n==0){file=sprintf("05-part-%d.fasta",partid);partid++;} print >> file; n_seq++; next;} { print >> file; }' < "${SORTMERNA_OUT}"
+
+
+"${sina_runner}" "${NAM}" "${NSLOTS}" "${nSEQ}" "${RES}"
+ERROR_SINA=$?
+
+if [[ "${ERROR_SINA}" -ne "0" ]]; then
+  email_comm "${sina} -i ${RES}/split_smr/spout_\${SGE_TASK_ID} -o ${RES}/split_smr/\${SGE_TASK_ID}.16S.align.fasta ...
+exited with RC ${ERROR_SINA} in job ${JOB_ID}."
+  db_error_comm "sina failed. Please contact adminitrator"
+  exit 2
+fi
+
 # END_TIME=`date +%s.%N`
