@@ -351,6 +351,51 @@ exited with RC ${ERROR_SORTMERNA} in job ${JOB_ID}."
 fi
 
 ###########################################################################################################
+# define environment for sub jobs
+###########################################################################################################
+
+echo frag_gene_scan=$frag_gene_scan >> 00-environment
+echo sina=$sina >> 00-environment
+echo sina_arb_pt_server=$sina_arb_pt_server >> 00-environment
+echo sina_version=$sina_version >> 00-environment
+echo sina_seed=$sina_seed >> 00-environment
+echo sina_seed_version=$sina_seed_version >> 00-environment
+echo sina_ref=$sina_ref >> 00-environment
+echo sina_ref_version=$sina_ref_version >> 00-environment
+echo SINA_SOCKET=$SINA_SOCKET >> 00-environment
+
+echo uproc=$uproc >> 00-environment
+echo r_interpreter=$r_interpreter >> 00-environment
+echo target_db_host=$target_db_host >> 00-environment
+echo target_db_port=$target_db_port >> 00-environment
+echo target_db_user=$target_db_user >> 00-environment
+echo target_db_name=$target_db_name >> 00-environment
+echo mt_admin_mail=$mt_admin_mail >> 00-environment
+echo THIS_JOB_TMP_DIR=$THIS_JOB_TMP_DIR >> 00-environment
+echo TFFILE=$TFFILE >> 00-environment
+echo PFAM_ACCESSIONS=$PFAM_ACCESSIONS >> 00-environment
+echo SAMPLE_LABEL=$SAMPLE_LABEL >> 00-environment
+echo RAW_FASTA=$RAW_FASTA >> 00-environment
+echo GC=$GC >> 00-environment
+echo VARGC=$VARGC >> 00-environment
+echo NUM_BASES=$NUM_BASES >> 00-environment
+echo NUM_READS=$NUM_READS >> 00-environment
+echo THIS_JOB_ID=$JOB_ID >> 00-environment
+echo temp_dir=$temp_dir >> 00-environment
+echo FAILED_JOBS_DIR=$FAILED_JOBS_DIR >> 00-environment
+echo RUNNING_JOBS_DIR=$RUNNING_JOBS_DIR >> 00-environment
+echo FINISHED_JOBS_DIR=$FINISHED_JOBS_DIR >> 00-environment
+echo SUBJOBS=$SUBJOBS >> 00-environment
+echo uproc_pfam=$uproc_pfam >> 00-environment
+echo uproc_model=$uproc_model >> 00-environment
+echo MG_ID=$MG_ID >> 00-environment
+echo SINA_LOG_DIR=$SINA_LOG_DIR >> 00-environment
+echo SLV_FILE=$SLV_FILE >> 00-environment
+echo ARBHOME=$ARBHOME >> 00-environment
+echo LD_LIBRARY_PATH=$LD_LIBRARY_PATH >> 00-environment
+
+
+###########################################################################################################
 # 3 - run SINA
 ###########################################################################################################
 
@@ -366,5 +411,10 @@ exited with RC ${ERROR_SINA} in job ${JOB_ID}."
   db_error_comm "sina failed. Please contact adminitrator"
   exit 2
 fi
+
+
+###########################################################################################################
+# 4 - run finish traits
+###########################################################################################################
 
 # END_TIME=`date +%s.%N`
