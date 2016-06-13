@@ -100,7 +100,7 @@ cd "${THIS_JOB_TMP_DIR}"
 # 4 - Finish Jobs
 ###########################################################################################################
 
-
+rm 00-environment
 echo frag_gene_scan=$frag_gene_scan >> 00-environment
 echo sina=$sina >> 00-environment
 echo sina_arb_pt_server=$sina_arb_pt_server >> 00-environment
@@ -144,7 +144,7 @@ echo NSLOTS=$NSLOTS >> 00-environment
 
 
 
-qsub -pe threaded 8 -l h=\!mg32 -N $FINISHJOBID -o $THIS_JOB_TMP_DIR -e $THIS_JOB_TMP_DIR -l ga -j y -terse -P megx.p -R y -m sa -M $mt_admin_mail -hold_jid $FGS_JOBARRAYID,$SINA_JOBARRAYID  /bioinf/home/epereira/workspace/mg-traits/resources/finish_runner.dev.sh $THIS_JOB_TMP_DIR
+qsub -pe threaded $NSLOTS -l h=\!mg32 -N $FINISHJOBID -o $THIS_JOB_TMP_DIR -e $THIS_JOB_TMP_DIR -l ga -j y -terse -P megx.p -R y -m sa -M $mt_admin_mail -hold_jid $FGS_JOBARRAYID,$SINA_JOBARRAYID  /bioinf/home/epereira/workspace/mg-traits/resources/finish_runner.dev.sh $THIS_JOB_TMP_DIR
 
 
 
