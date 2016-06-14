@@ -424,6 +424,11 @@ fi
 
 qsub -pe threaded $NSLOTS -l h=\!mg32 -N $FINISHJOBID -o $THIS_JOB_TMP_DIR -e $THIS_JOB_TMP_DIR -l ga -j y -terse -P megx.p -R y -m sa -M $mt_admin_mail -hold_jid $FGS_JOBARRAYID,$SINA_JOBARRAYID  /bioinf/home/epereira/workspace/mg-traits/resources/finish_runner.dev.sh $THIS_JOB_TMP_DIR
 
+if [[ $? -ne 0 ]]; then
+  email_comm "qsub finish_runner.sh failed"
+  db_error_comm "qsub finish_runner.sh failed"
+fi  
+
 ###########################################################################################################
 # 5 - finished job communication: update mg_traits_jobs
 ###########################################################################################################
