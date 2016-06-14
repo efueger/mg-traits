@@ -302,55 +302,6 @@ VARGC=$(cut -f3 "${INFOSEQ_MGSTATS}" -d ' ')
 printf "Number of bases: %d\nGC content: %f\nGC variance: %f\n" "${NUM_BASES}" "${GC}" "${VARGC}"
 
 
-
-###########################################################################################################
-# 1 - run fgs
-###########################################################################################################
-
-#Split original
-awk -vn="${NSEQ}" 'BEGIN {n_seq=0;partid=1;} /^>/ {if(n_seq%n==0){file=sprintf("05-part-%d.fasta",partid);partid++;} print >> file; n_seq++; next;} { print >> file; }' < "${RAW_FASTA}"
-NFILES=$(ls -1 05-part*.fasta | wc -l)
-
-"${fgs_runner}" "${NSLOTS}" "${NFILES}" "${FGS_JOBARRAYID}"
-
-ERROR_FGS=$?
-
-if [[ "${ERROR_FGS}" -ne "0" ]]; then
-  email_comm  "${frag_gene_scan} -genome=${IN_FASTA_FILE} -out=${IN_FASTA_FILE}.genes10 -complete=0 -train=sanger_10
-exited with RC ${ERROR_FGS} in job ${JOB_ID}"
-  db_error_comm "FragGeneScan failed. Please contact adminitrator."
-  exit 2
-fi
-
-
-# ###########################################################################################################
-# # 2 - run sortmerna
-# ###########################################################################################################
-
-#MEM=$(free -m | grep Mem | awk '{printf "%d",$2/3}')
-MEM=4000
-$sortmerna --reads "${RAW_FASTA}" -a ${NSLOTS} --ref \
-${DB}/rRNA_databases/silva-bac-16s-id90.fasta,\
-${DB}/index/silva-bac-16s-db:${DB}/rRNA_databases/silva-arc-16s-id95.fasta,\
-${DB}/index/silva-arc-16s-db:${DB}/rRNA_databases/silva-euk-18s-id95.fasta,\
-${DB}/index/silva-euk-18s-db --blast 1 --fastx --aligned "${SORTMERNA_OUT}" -v --log -m ${MEM} --best 1 > sortmerna.log
-
-
-if [[ "${ERROR_SORTMERNA}" -ne "0" ]]; then
-  email_comm "${sortmerna} --reads ${RAW_FASTA} -a ${NSLOTS} --ref ${DB}/rRNA_databases/silva-bac-16s-id90.fasta ...
-exited with RC ${ERROR_SORTMERNA} in job ${JOB_ID}."
-  db_error_comm "sortmerna failed. Please contact adminitrator"
-  exit 2
-fi
-
-NUM_RNA=$(egrep -c ">" "${SORTMERNA_OUT}".fasta)
-
-if [[ "${NUM_RNA}" -eq 0 ]]; then
-  email_comm "not RNA sequence found by sortmerna"
-  db_error_comm "no RNA sequence found by sortmerna"
-  exit 2
-fi  
-
 ###########################################################################################################
 # define environment for sub jobs
 ###########################################################################################################
@@ -400,6 +351,55 @@ echo THIS_JOB_TMP_DIR=$THIS_JOB_TMP_DIR >> 00-environment
 echo FAILED_JOBS_DIR=$FAILED_JOBS_DIR >> 00-environment
 echo RUNNING_JOBS_DIR=$RUNNING_JOBS_DIR >> 00-environment
 echo FINISHED_JOBS_DIR=$FINISHED_JOBS_DIR >> 00-environment
+
+###########################################################################################################
+# 1 - run fgs
+###########################################################################################################
+
+#Split original
+awk -vn="${NSEQ}" 'BEGIN {n_seq=0;partid=1;} /^>/ {if(n_seq%n==0){file=sprintf("05-part-%d.fasta",partid);partid++;} print >> file; n_seq++; next;} { print >> file; }' < "${RAW_FASTA}"
+NFILES=$(ls -1 05-part*.fasta | wc -l)
+
+"${fgs_runner}" "${NSLOTS}" "${NFILES}" "${FGS_JOBARRAYID}"
+
+ERROR_FGS=$?
+
+if [[ "${ERROR_FGS}" -ne "0" ]]; then
+  email_comm  "${frag_gene_scan} -genome=${IN_FASTA_FILE} -out=${IN_FASTA_FILE}.genes10 -complete=0 -train=sanger_10
+exited with RC ${ERROR_FGS} in job ${JOB_ID}"
+  db_error_comm "FragGeneScan failed. Please contact adminitrator."
+  exit 2
+fi
+
+
+# ###########################################################################################################
+# # 2 - run sortmerna
+# ###########################################################################################################
+
+#MEM=$(free -m | grep Mem | awk '{printf "%d",$2/3}')
+MEM=4000
+$sortmerna --reads "${RAW_FASTA}" -a ${NSLOTS} --ref \
+${DB}/rRNA_databases/silva-bac-16s-id90.fasta,\
+${DB}/index/silva-bac-16s-db:${DB}/rRNA_databases/silva-arc-16s-id95.fasta,\
+${DB}/index/silva-arc-16s-db:${DB}/rRNA_databases/silva-euk-18s-id95.fasta,\
+${DB}/index/silva-euk-18s-db --blast 1 --fastx --aligned "${SORTMERNA_OUT}" -v --log -m ${MEM} --best 1 > sortmerna.log
+
+
+if [[ "${ERROR_SORTMERNA}" -ne "0" ]]; then
+  email_comm "${sortmerna} --reads ${RAW_FASTA} -a ${NSLOTS} --ref ${DB}/rRNA_databases/silva-bac-16s-id90.fasta ...
+exited with RC ${ERROR_SORTMERNA} in job ${JOB_ID}."
+  db_error_comm "sortmerna failed. Please contact adminitrator"
+  exit 2
+fi
+
+NUM_RNA=$(egrep -c ">" "${SORTMERNA_OUT}".fasta)
+
+if [[ "${NUM_RNA}" -eq 0 ]]; then
+  email_comm "not RNA sequence found by sortmerna"
+  db_error_comm "no RNA sequence found by sortmerna"
+  exit 2
+fi  
+
 
 ###########################################################################################################
 # 3 - run SINA
