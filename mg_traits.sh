@@ -88,12 +88,9 @@ function db_error_comm() {
   WHERE sample_label = '${SAMPLE_LABEL}' AND id = '${MG_ID}';" | psql -U "${target_db_user}" -h "${target_db_host}" -p "${target_db_port}" -d "${target_db_name}"
 }
 
-
-
 ###########################################################################################################
 # 1 - Check database connection
 ###########################################################################################################
-
 
 DB_RESULT=$( echo "UPDATE mg_traits.mg_traits_jobs SET time_started = now(), job_id = ${JOB_ID}, cluster_node = '${HOSTNAME}' WHERE sample_label = '${SAMPLE_LABEL}' AND id = ${MG_ID};" \
 | psql -U "${target_db_user}" -h "${target_db_host}" -p "${target_db_port}" -d "${target_db_name}" )
@@ -108,7 +105,6 @@ if [[ "${DB_RESULT}" != "UPDATE 1" ]]; then
   email_comm "sample name ${SAMPLE_LABEL} is not in database Result:${DB_RESULT}"  
   exit 2
 fi
-
 
 ###########################################################################################################
 # 2 - Create job directory
@@ -129,7 +125,6 @@ if [[ "$(pwd)" != "${THIS_JOB_TMP_DIR}" ]]; then
  
  exit 2; 
 fi
-
 
 ###########################################################################################################
 # 3 - Download file from MG URL
@@ -312,7 +307,6 @@ printf "Number of bases: %d\nGC content: %f\nGC variance: %f\n" "${NUM_BASES}" "
 # 1 - run fgs
 ###########################################################################################################
 
-
 #Split original
 awk -vn="${NSEQ}" 'BEGIN {n_seq=0;partid=1;} /^>/ {if(n_seq%n==0){file=sprintf("05-part-%d.fasta",partid);partid++;} print >> file; n_seq++; next;} { print >> file; }' < "${RAW_FASTA}"
 NFILES=$(ls -1 05-part*.fasta | wc -l)
@@ -327,7 +321,6 @@ exited with RC ${ERROR_FGS} in job ${JOB_ID}"
   db_error_comm "FragGeneScan failed. Please contact adminitrator."
   exit 2
 fi
-
 
 
 # ###########################################################################################################
@@ -350,6 +343,14 @@ exited with RC ${ERROR_SORTMERNA} in job ${JOB_ID}."
   exit 2
 fi
 
+NUM_RNA=$(egrep -c ">" "${SORTMERNA_OUT}".fasta)
+
+if [[ "${NUM_RNA}" -eq 0 ]]; then
+  email_comm "not RNA sequence found by sortmerna"
+  db_error_comm "no RNA sequence found by sortmerna"
+  exit 2
+fi  
+
 ###########################################################################################################
 # define environment for sub jobs
 ###########################################################################################################
@@ -365,35 +366,40 @@ echo sina_ref_version=$sina_ref_version >> 00-environment
 echo SINA_SOCKET=$SINA_SOCKET >> 00-environment
 
 echo uproc=$uproc >> 00-environment
+echo uproc_pfam=$uproc_pfam >> 00-environment
+echo uproc_model=$uproc_model >> 00-environment
+
 echo r_interpreter=$r_interpreter >> 00-environment
+
 echo target_db_host=$target_db_host >> 00-environment
 echo target_db_port=$target_db_port >> 00-environment
 echo target_db_user=$target_db_user >> 00-environment
 echo target_db_name=$target_db_name >> 00-environment
 echo mt_admin_mail=$mt_admin_mail >> 00-environment
-echo THIS_JOB_TMP_DIR=$THIS_JOB_TMP_DIR >> 00-environment
+
 echo TFFILE=$TFFILE >> 00-environment
 echo PFAM_ACCESSIONS=$PFAM_ACCESSIONS >> 00-environment
+echo SLV_FILE=$SLV_FILE >> 00-environment
+
+echo JOB_ID=$JOB_ID >> 00-environment
 echo SAMPLE_LABEL=$SAMPLE_LABEL >> 00-environment
+echo MG_ID=$MG_ID >> 00-environment
+echo NSLOTS=$NSLOTS >> 00-environment
+
 echo RAW_FASTA=$RAW_FASTA >> 00-environment
 echo GC=$GC >> 00-environment
 echo VARGC=$VARGC >> 00-environment
 echo NUM_BASES=$NUM_BASES >> 00-environment
 echo NUM_READS=$NUM_READS >> 00-environment
-echo THIS_JOB_ID=$JOB_ID >> 00-environment
+
+echo SINA_LOG_DIR=$SINA_LOG_DIR >> 00-environment
+echo ARBHOME=$ARBHOME >> 00-environment
+echo LD_LIBRARY_PATH=$LD_LIBRARY_PATH >> 00-environment
 echo temp_dir=$temp_dir >> 00-environment
+echo THIS_JOB_TMP_DIR=$THIS_JOB_TMP_DIR >> 00-environment
 echo FAILED_JOBS_DIR=$FAILED_JOBS_DIR >> 00-environment
 echo RUNNING_JOBS_DIR=$RUNNING_JOBS_DIR >> 00-environment
 echo FINISHED_JOBS_DIR=$FINISHED_JOBS_DIR >> 00-environment
-echo SUBJOBS=$SUBJOBS >> 00-environment
-echo uproc_pfam=$uproc_pfam >> 00-environment
-echo uproc_model=$uproc_model >> 00-environment
-echo MG_ID=$MG_ID >> 00-environment
-echo SINA_LOG_DIR=$SINA_LOG_DIR >> 00-environment
-echo SLV_FILE=$SLV_FILE >> 00-environment
-echo ARBHOME=$ARBHOME >> 00-environment
-echo LD_LIBRARY_PATH=$LD_LIBRARY_PATH >> 00-environment
-echo NSLOTS=$NSLOTS >> 00-environment
 
 ###########################################################################################################
 # 3 - run SINA
@@ -412,11 +418,23 @@ exited with RC ${ERROR_SINA} in job ${JOB_ID}."
   exit 2
 fi
 
-
 ###########################################################################################################
 # 4 - run finish traits
 ###########################################################################################################
 
-
 qsub -pe threaded $NSLOTS -l h=\!mg32 -N $FINISHJOBID -o $THIS_JOB_TMP_DIR -e $THIS_JOB_TMP_DIR -l ga -j y -terse -P megx.p -R y -m sa -M $mt_admin_mail -hold_jid $FGS_JOBARRAYID,$SINA_JOBARRAYID  /bioinf/home/epereira/workspace/mg-traits/resources/finish_runner.dev.sh $THIS_JOB_TMP_DIR
+
+###########################################################################################################
+# 5 - finished job communication: update mg_traits_jobs
+###########################################################################################################
+
+END_TIME=`date +%s.%N`
+RUN_TIME=`echo "${END_TIME}"-"${START_TIME}" | bc -l`
+mv $THIS_JOB_TMP_DIR $FINISHED_JOBS_DIR
+
+email_comm "Analysis of ${SAMPLE_LABEL} done in ${RUN_TIME}"
+
+echo "UPDATE mg_traits.mg_traits_jobs SET total_run_time = total_run_time + "${RUN_TIME}", time_protocol = time_protocol \
+|| ('${JOB_ID}', 'mg_traits', ${RUN_TIME})::mg_traits.time_log_entry WHERE sample_label = '${SAMPLE_LABEL}' AND id = '${MG_ID}';" \
+| psql -U "${target_db_user}" -h "${target_db_host}" -p "${target_db_port}" -d "${target_db_name}"
 
