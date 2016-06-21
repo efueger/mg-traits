@@ -421,7 +421,7 @@ fi
 # 4 - run finish traits
 ###########################################################################################################
 
-qsub -pe threaded $NSLOTS -l h=\!mg32 -N $FINISHJOBID -o $THIS_JOB_TMP_DIR -e $THIS_JOB_TMP_DIR -l ga -j y -terse -P megx.p -R y -m sa -M $mt_admin_mail -hold_jid $FGS_JOBARRAYID,$SINA_JOBARRAYID  /bioinf/home/epereira/workspace/mg-traits/resources/finish_runner.dev.sh $THIS_JOB_TMP_DIR
+qsub -pe threaded $NSLOTS -l h=\!mg32 -N $FINISHJOBID -o $THIS_JOB_TMP_DIR -e $THIS_JOB_TMP_DIR -l ga -j y -terse -P megx.p -R y -m sa -M $mt_admin_mail -hold_jid $FGS_JOBARRAYID,$SINA_JOBARRAYID  /bioinf/home/epereira/workspace/mg-traits/resources/finish_runner.sh $THIS_JOB_TMP_DIR
 
 if [[ $? -ne 0 ]]; then
   email_comm "qsub finish_runner.sh failed"
@@ -447,7 +447,7 @@ echo "UPDATE mg_traits.mg_traits_jobs SET total_run_time = total_run_time + "${R
 # 6 remove preprcess data 
 ###########################################################################################################
 
-FILE=$( echo "SELECT mg_url FROM mg_traits.mg_traits_jobs WHERE label=' ${SAMPLE_LABEL}' AND id = '${MG_ID}'" \ |
-| psql -U "${target_db_user}" -h "${target_db_host}" -p "${target_db_port}" -d "${target_db_name}" )
-FILE=$(echo $FILE | sed 's/file:\/\///')
-rm $FILE
+# FILE=$( echo "SELECT mg_url FROM mg_traits.mg_traits_jobs WHERE label=' ${SAMPLE_LABEL}' AND id = '${MG_ID}'" \ |
+# | psql -U "${target_db_user}" -h "${target_db_host}" -p "${target_db_port}" -d "${target_db_name}" )
+# FILE=$(echo $FILE | sed 's/file:\/\///')
+# rm $FILE
