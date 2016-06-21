@@ -112,8 +112,8 @@ fi
 
 echo "This job tmp dir: ${THIS_JOB_TMP_DIR}"; 
 
-#rm -r ${THIS_JOB_TMP_DIR}  # CHANGE THIS FOR REAL DATA!!!!!!!!!! 
-qdel -u megxnet  # CHANGE THIS FOR REAL DATA!!!!!!!!!! 
+# rm -r ${THIS_JOB_TMP_DIR}  # CHANGE THIS FOR REAL DATA!!!!!!!!!! 
+# qdel -u megxnet  # CHANGE THIS FOR REAL DATA!!!!!!!!!! 
  
 mkdir "${THIS_JOB_TMP_DIR}" && cd "${THIS_JOB_TMP_DIR}"
 mkdir "${THIS_JOB_TMP_DIR_DATA}" && mkdir "${SINA_LOG_DIR}"
@@ -428,7 +428,7 @@ qsub -pe threaded $NSLOTS -l h=\!mg32 -N $FINISHJOBID -o $THIS_JOB_TMP_DIR -e $T
 if [[ $? -ne 0 ]]; then
   email_comm "qsub finish_runner.sh failed"
   db_error_comm "qsub finish_runner.sh failed"
-fi  
+fi 
 
 ###########################################################################################################
 # 5 - finished job communication: update mg_traits_jobs
