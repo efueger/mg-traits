@@ -439,11 +439,6 @@ RUN_TIME=`echo "${END_TIME}"-"${START_TIME}" | bc -l`
 # mv $THIS_JOB_TMP_DIR $FINISHED_JOBS_DIR
 
 
-mail -s "mg_traits:${JOB_ID} finished" "${mt_admin_mail}" <<EOF
-"Analysis of ${SAMPLE_LABEL} done in ${RUN_TIME}"
-EOF
-
-
 echo "UPDATE mg_traits.mg_traits_jobs SET total_run_time = total_run_time + "${RUN_TIME}", time_protocol = time_protocol \
 || ('${JOB_ID}', 'mg_traits', ${RUN_TIME})::mg_traits.time_log_entry WHERE sample_label = '${SAMPLE_LABEL}' AND id = '${MG_ID}';" \
 | psql -U "${target_db_user}" -h "${target_db_host}" -p "${target_db_port}" -d "${target_db_name}"
