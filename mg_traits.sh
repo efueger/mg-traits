@@ -119,7 +119,7 @@ mkdir "${THIS_JOB_TMP_DIR_DATA}" && mkdir "${SINA_LOG_DIR}"
 
 echo "Logs, data and temp files will be written to:$(pwd)"
 if [[ "$(pwd)" != "${THIS_JOB_TMP_DIR}" ]]; then 
- email_comm  "Could not access job temp dir ${THIS_JOB_TMP_DIR}"
+ email_comm  "Could not access job temp dir ${THIS_JOB_TMP_DIR} in $(pwd)"
  db_error_comm "Could not access job temp dir ${THIS_JOB_TMP_DIR}"
  
  exit 2; 
