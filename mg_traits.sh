@@ -436,7 +436,7 @@ fi
 
 END_TIME=`date +%s.%N`
 RUN_TIME=`echo "${END_TIME}"-"${START_TIME}" | bc -l`
-mv $THIS_JOB_TMP_DIR $FINISHED_JOBS_DIR
+# mv $THIS_JOB_TMP_DIR $FINISHED_JOBS_DIR
 
 email_comm "Analysis of ${SAMPLE_LABEL} done in ${RUN_TIME}"
 
