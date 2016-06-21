@@ -112,7 +112,7 @@ fi
 
 echo "This job tmp dir: ${THIS_JOB_TMP_DIR}"; 
 
-rm -r ${THIS_JOB_TMP_DIR}  # CHANGE THIS FOR REAL DATA!!!!!!!!!! 
+#rm -r ${THIS_JOB_TMP_DIR}  # CHANGE THIS FOR REAL DATA!!!!!!!!!! 
 qdel -u megxnet  # CHANGE THIS FOR REAL DATA!!!!!!!!!! 
  
 mkdir "${THIS_JOB_TMP_DIR}" && cd "${THIS_JOB_TMP_DIR}"
