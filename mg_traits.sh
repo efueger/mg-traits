@@ -247,7 +247,7 @@ fi
 ###########################################################################################################
 
 printf "Removing duplicated sequences..."
-"${cd_hit_dup}" -i "${RAW_FASTA}" -o "${UNIQUE}" > "${UNIQUE_LOG}"
+"${cd_hit_dup}" -d 1 -i "${RAW_FASTA}" -o "${UNIQUE}" > "${UNIQUE_LOG}"
 CD_HIT_ERROR_CODE="$?"
 
 if [[ "${CD_HIT_ERROR_CODE}" -ne "0" ]]; then 
