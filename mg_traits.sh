@@ -78,7 +78,6 @@ fi
 done
 
 
-
 #####################################################################################################
 # Define database communication function
 #####################################################################################################
@@ -182,8 +181,16 @@ echo target_db_user=${target_db_user} >> 00-environment
 echo target_db_host=${target_db_host} >> 00-environment
 echo target_db_port=${target_db_port} >> 00-environment
 echo target_db_name=${target_db_name} >> 00-environment
+echo preprocess=${preprocess} >> 00-environment
 
 "${preprocess}" "${SAMPLE_LABEL}" "${NSLOTS}"
+
+if [[ $? -ne "0" ]]; then
+  email_comm "failed preprocess ${preprocess}"
+  db_error_comm "failed preprocess ${preprocess}"
+  exit 2; 
+fi
+
 PROCESS_FASTA="01-process.SR_rmadapt_nodup.fasta"
 
 ###########################################################################################################
