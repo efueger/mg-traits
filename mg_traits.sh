@@ -470,9 +470,9 @@ echo "UPDATE mg_traits.mg_traits_jobs SET total_run_time = total_run_time + "${R
 # 6 remove preprcess data 
 ###########################################################################################################
 
-FILE=$( echo "SELECT mg_url FROM mg_traits.mg_traits_jobs WHERE label=' ${SAMPLE_LABEL}' AND id = '${MG_ID}'" \ |
-| psql -U "${target_db_user}" -h "${target_db_host}" -p "${target_db_port}" -d "${target_db_name}" )
-FILE=$(echo $FILE | sed 's/file:\/\///')
-rm $FILE
+# FILE=$( echo "SELECT mg_url FROM mg_traits.mg_traits_jobs WHERE label=' ${SAMPLE_LABEL}' AND id = '${MG_ID}'" \ |
+# | psql -U "${target_db_user}" -h "${target_db_host}" -p "${target_db_port}" -d "${target_db_name}" )
+# FILE=$(echo $FILE | sed 's/file:\/\///')
+# rm $FILE
 
 
