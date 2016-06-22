@@ -183,7 +183,7 @@ echo target_db_port=${target_db_port} >> 00-environment
 echo target_db_name=${target_db_name} >> 00-environment
 echo preprocess=${preprocess} >> 00-environment
 
-"${preprocess}" "${SAMPLE_LABEL}" "${NSLOTS}"
+${preprocess} "${SAMPLE_LABEL}" "${NSLOTS}"
 
 if [[ $? -ne "0" ]]; then
   email_comm "failed preprocess ${preprocess}"
