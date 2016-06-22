@@ -182,6 +182,7 @@ echo target_db_host=${target_db_host} >> 00-environment
 echo target_db_port=${target_db_port} >> 00-environment
 echo target_db_name=${target_db_name} >> 00-environment
 echo preprocess=${preprocess} >> 00-environment
+echo cd_hit_dup_runner=${cd_hit_dup_runner} >> 00-environment
 
 ${preprocess} "${SAMPLE_LABEL}" "${NSLOTS}" 2> preprcess_log
 
