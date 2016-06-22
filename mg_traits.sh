@@ -269,7 +269,7 @@ fi
 ###########################################################################################################
 
 printf "Removing duplicated sequences..."
-"${cd_hit_dup}" -d 1 -i "${PROCESS_FASTA}" -o "${UNIQUE}" > "${UNIQUE_LOG}"
+qsub -sync y -pe threaded $NSLOTS  "${cd_hit_dup_runner}" "${PROCESS_FASTA}" "${UNIQUE}" "${UNIQUE_LOG}"
 CD_HIT_ERROR_CODE="$?"
 
 if [[ "${CD_HIT_ERROR_CODE}" -ne "0" ]]; then 
