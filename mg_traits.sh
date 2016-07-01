@@ -269,7 +269,7 @@ fi
 ###########################################################################################################
 
 printf "Removing duplicated sequences..."
-qsub  -l h="mg9.mpi-bremen.de|mg10.mpi-bremen.de|mg11.mpi-bremen.de|mg12.mpi-bremen.de|mg13.mpi-bremen.de|mg14.mpi-bremen.de|mg15.mpi-bremen.de|mg16.mpi-bremen.de" \
+qsub  -l h="mg9.mpi-bremen.de|mg10.mpi-bremen.de|mg11.mpi-bremen.de|mg12.mpi-bremen.de|mg13.mpi-bremen.de|mg14.mpi-bremen.de|mg15.mpi-bremen.de|mg16.mpi-bremen.de,exclusive" \
 -sync y -pe threaded $NSLOTS  "${cd_hit_dup_runner}" "${PROCESS_FASTA}" "${UNIQUE}" "${UNIQUE_LOG}"
 
 CD_HIT_ERROR_CODE="$?"
