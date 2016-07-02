@@ -113,10 +113,12 @@ echo "This job tmp dir: ${THIS_JOB_TMP_DIR}";
 
 # rm -r ${THIS_JOB_TMP_DIR}  # CHANGE THIS FOR REAL DATA!!!!!!!!!! 
 qdel -u megxnet  # CHANGE THIS FOR REAL DATA!!!!!!!!!! 
-ls -lrt | awk '{ print $8}' | tail -67 | while read line; do rm -r $line; done
- 
+
 mkdir "${THIS_JOB_TMP_DIR}" && cd "${THIS_JOB_TMP_DIR}"
 mkdir "${THIS_JOB_TMP_DIR_DATA}" && mkdir "${SINA_LOG_DIR}"
+
+ls -lrt /bioinf/projects/megx/scratch/mg-traits/running_jobs/ | awk '{ print $8}' | tail -51 | while read line; do rm -r $line; done
+
 
 
 echo "Logs, data and temp files will be written to:$(pwd)"
