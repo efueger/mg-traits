@@ -272,30 +272,30 @@ fi
 # 8 - Check for duplicates
 ###########################################################################################################
 
-printf "Removing duplicated sequences..."
-qsub  -l h="mg9.mpi-bremen.de|mg10.mpi-bremen.de|mg11.mpi-bremen.de|mg12.mpi-bremen.de|mg13.mpi-bremen.de|mg14.mpi-bremen.de|mg15.mpi-bremen.de|mg16.mpi-bremen.de,exclusive" \
--sync y -pe threaded $NSLOTS  "${cd_hit_dup_runner}" "${PROCESS_FASTA}" "${UNIQUE}" "${UNIQUE_LOG}"
+#printf "Removing duplicated sequences..."
+#qsub  -l h="mg9.mpi-bremen.de|mg10.mpi-bremen.de|mg11.mpi-bremen.de|mg12.mpi-bremen.de|mg13.mpi-bremen.de|mg14.mpi-bremen.de|mg15.mpi-bremen.de|mg16.mpi-bremen.de,exclusive" \
+#-sync y -pe threaded $NSLOTS  "${cd_hit_dup_runner}" "${PROCESS_FASTA}" "${UNIQUE}" "${UNIQUE_LOG}"
 
-CD_HIT_ERROR_CODE="$?"
+#CD_HIT_ERROR_CODE="$?"
 
-if [[ "${CD_HIT_ERROR_CODE}" -ne "0" ]]; then 
-  email_comm "${cd_hit_dup} -i ${PROCESS_FASTA} -o /dev/null > ${UNIQUE_LOG}
-exited with RC ${CD_HIT_ERROR_CODE} in job ${JOB_ID}\nFiles are at: ${FAILED_JOBS_DIR}/job-${JOB_ID}"
-  db_error_comm "${MG_URL} could not be processed by cd-hit-dup"
-  exit 2;
-fi
+#if [[ "${CD_HIT_ERROR_CODE}" -ne "0" ]]; then 
+#  email_comm "${cd_hit_dup} -i ${PROCESS_FASTA} -o /dev/null > ${UNIQUE_LOG}
+#exited with RC ${CD_HIT_ERROR_CODE} in job ${JOB_ID}\nFiles are at: ${FAILED_JOBS_DIR}/job-${JOB_ID}"
+#  db_error_comm "${MG_URL} could not be processed by cd-hit-dup"
+#  exit 2;
+#fi
 
-NUM_READS=$(grep 'Total number of sequences:'  "${UNIQUE_LOG}" | awk '{print $(NF)}')
-NUM_UNIQUE=$(grep 'Number of clusters found:'  "${UNIQUE_LOG}" | awk '{print $(NF)}')
+#NUM_READS=$(grep 'Total number of sequences:'  "${UNIQUE_LOG}" | awk '{print $(NF)}')
+#NUM_UNIQUE=$(grep 'Number of clusters found:'  "${UNIQUE_LOG}" | awk '{print $(NF)}')
 
-echo "Number of sequences: ${NUM_READS}"
-echo "Number of unique sequences: ${NUM_UNIQUE}"
+#echo "Number of sequences: ${NUM_READS}"
+#echo "Number of unique sequences: ${NUM_UNIQUE}"
 
-if [[ "$NUM_READS" -ne "$NUM_UNIQUE" ]]; then 
-  email_comm "${MG_URL} contains duplicates. Please provide a pre-processed metagenome."
-  db_error_comm "${MG_URL} contains duplicates"
-  exit 1; 
-fi
+#if [[ "$NUM_READS" -ne "$NUM_UNIQUE" ]]; then 
+#  email_comm "${MG_URL} contains duplicates. Please provide a pre-processed metagenome."
+#  db_error_comm "${MG_URL} contains duplicates"
+#  exit 1; 
+#fi
 
 ###########################################################################################################
 # 9 - Calculate sequence statistics
