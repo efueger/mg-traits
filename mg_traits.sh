@@ -112,8 +112,8 @@ fi
 echo "This job tmp dir: ${THIS_JOB_TMP_DIR}"; 
 
 # rm -r ${THIS_JOB_TMP_DIR}  # CHANGE THIS FOR REAL DATA!!!!!!!!!! 
- qdel -u megxnet  # CHANGE THIS FOR REAL DATA!!!!!!!!!! 
- rm -r /bioinf/projects/megx/scratch/mg-traits/running_jobs/job-83*  # CHANGE THIS FOR REAL DATA
+# qdel -u megxnet  # CHANGE THIS FOR REAL DATA!!!!!!!!!! 
+# rm -r /bioinf/projects/megx/scratch/mg-traits/running_jobs/job-83*  # CHANGE THIS FOR REAL DATA
 
 mkdir "${THIS_JOB_TMP_DIR}" && cd "${THIS_JOB_TMP_DIR}"
 mkdir "${THIS_JOB_TMP_DIR_DATA}" && mkdir "${SINA_LOG_DIR}"
