@@ -437,7 +437,9 @@ fi
 awk -vn="${nSEQ}" 'BEGIN {n_seq=0;partid=1;} /^>/ {if(n_seq%n==0){file=sprintf("06-part-%d.fasta",partid);partid++;} print >> file; n_seq++; next;} { print >> file; }' < "${SORTMERNA_OUT}".fasta
 nFILES=$(ls -1 06-part*.fasta | wc -l)
 
-"${sina_runner}" "${NSLOTS}" "${nFILES}" "${SINA_JOBARRAYID}"
+qsub -pe threaded ${NSLOTS} -t 1-${nFILES} -N ${SINA_JOBARRAYID} ${sina_runner}
+# "${sina_runner}" "${NSLOTS}" "${nFILES}" "${SINA_JOBARRAYID}"
+
 ERROR_SINA=$?
 
 if [[ "${ERROR_SINA}" -ne "0" ]]; then
