@@ -389,7 +389,8 @@ echo FINISHED_JOBS_DIR=$FINISHED_JOBS_DIR >> 01-environment
 awk -vn="${NSEQ}" 'BEGIN {n_seq=0;partid=1;} /^>/ {if(n_seq%n==0){file=sprintf("05-part-%d.fasta",partid);partid++;} print >> file; n_seq++; next;} { print >> file; }' < "${PROCESS_FASTA}"
 NFILES=$(ls -1 05-part*.fasta | wc -l)
 
-"${fgs_runner}" "${NSLOTS}" "${NFILES}" "${FGS_JOBARRAYID}"
+qsub  -t 1-"${NFILES}" -pe threaded "${NSLOTS}" -N "${FGS_JOBARRAYID}" ${fgs_runner}
+# "${fgs_runner}" "${NSLOTS}" "${NFILES}" "${FGS_JOBARRAYID}"
 
 ERROR_FGS=$?
 
@@ -399,7 +400,6 @@ exited with RC ${ERROR_FGS} in job ${JOB_ID}"
   db_error_comm "FragGeneScan failed. Please contact adminitrator."
   exit 2
 fi
-
 
 # ###########################################################################################################
 # # 2 - run sortmerna
