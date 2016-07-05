@@ -189,7 +189,7 @@ echo pear="${pear}" >> 00-environment
 echo bbduk="${bbduk}" >> 00-environment
 
 
-${preprocess} "${SAMPLE_LABEL}" "${NSLOTS}" 2> preprcess_log
+${preprocess} "${SAMPLE_LABEL}" "${NSLOTS}" 2> preprocess_log
 
 if [[ $? -ne "0" ]]; then
   email_comm "failed preprocess ${preprocess}"
