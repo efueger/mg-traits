@@ -175,7 +175,8 @@ fi
 # 4 - Preprocess data
 ###########################################################################################################
 
-echo SAMPLE_LABEL="${SAMPLE_LABEL}" > 00-environment
+echo PROCESS_FASTA="${PROCESS_FASTA}" > 00-environment
+echo SAMPLE_LABEL="${SAMPLE_LABEL}" >> 00-environment
 echo MG_ID="${MG_ID}" >>  00-environment
 echo target_db_user="${target_db_user}" >> 00-environment
 echo target_db_host="${target_db_host}" >> 00-environment
@@ -196,7 +197,6 @@ if [[ $? -ne "0" ]]; then
   exit 2; 
 fi
 
-PROCESS_FASTA="01-process.SR_rmadapt_nodup.fasta"
 
 ###########################################################################################################
 # 5 -  Validate file
