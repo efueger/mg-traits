@@ -178,6 +178,7 @@ fi
 echo PROCESS_FASTA="${PROCESS_FASTA}" > 00-environment
 echo SAMPLE_LABEL="${SAMPLE_LABEL}" >> 00-environment
 echo MG_ID="${MG_ID}" >>  00-environment
+echo NSLOTS="${NSLOTS}" >> 00-environment
 echo target_db_user="${target_db_user}" >> 00-environment
 echo target_db_host="${target_db_host}" >> 00-environment
 echo target_db_port="${target_db_port}" >> 00-environment
@@ -189,7 +190,7 @@ echo pear="${pear}" >> 00-environment
 echo bbduk="${bbduk}" >> 00-environment
 
 
-${preprocess} "${SAMPLE_LABEL}" "${NSLOTS}" 2> preprocess_log
+${preprocess} "${SAMPLE_LABEL}" 2> preprocess_log
 
 if [[ $? -ne "0" ]]; then
   email_comm "failed preprocess ${preprocess}"
