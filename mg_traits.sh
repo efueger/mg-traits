@@ -112,8 +112,8 @@ fi
 echo "This job tmp dir: ${THIS_JOB_TMP_DIR}"; 
 
 # rm -r ${THIS_JOB_TMP_DIR}  # CHANGE THIS FOR REAL DATA!!!!!!!!!! 
-# qdel -u megxnet  # CHANGE THIS FOR REAL DATA!!!!!!!!!! 
-# rm -r /bioinf/projects/megx/scratch/mg-traits/running_jobs/job-83*  # CHANGE THIS FOR REAL DATA
+qdel -u megxnet  # CHANGE THIS FOR REAL DATA!!!!!!!!!! 
+rm -r /bioinf/projects/megx/scratch/mg-traits/running_jobs/job-83*  # CHANGE THIS FOR REAL DATA
 
 mkdir "${THIS_JOB_TMP_DIR}" && cd "${THIS_JOB_TMP_DIR}"
 mkdir "${THIS_JOB_TMP_DIR_DATA}" && mkdir "${SINA_LOG_DIR}"
@@ -189,8 +189,8 @@ echo cd_hit_dup="${cd_hit_dup}" >> 00-environment
 echo pear="${pear}" >> 00-environment
 echo bbduk="${bbduk}" >> 00-environment
 
-
-${preprocess} "${SAMPLE_LABEL}" 2> preprocess_log
+qsub -sync y -pe threaded $NSLOTS -l h=\!mg32 -N $PREPROCESJOBID -o $THIS_JOB_TMP_DIR -e $THIS_JOB_TMP_DIR -l ga -j y -terse -P megx.p -R y -m sa -M $mt_admin_mail \
+"${preprocess}" "${SAMPLE_LABEL}" 
 
 if [[ $? -ne "0" ]]; then
   email_comm "failed preprocess ${preprocess}"
