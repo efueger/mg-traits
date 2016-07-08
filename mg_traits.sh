@@ -189,7 +189,7 @@ echo cd_hit_dup="${cd_hit_dup}" >> 00-environment
 echo pear="${pear}" >> 00-environment
 echo bbduk="${bbduk}" >> 00-environment
 
-qsub -sync y -pe threaded $NSLOTS -l h=\!mg32 -N $PREPROCESJOBID -o $THIS_JOB_TMP_DIR -e $THIS_JOB_TMP_DIR -l ga -j y -terse -P megx.p -R y -m sa -M $mt_admin_mail \
+qsub -sync y -pe threaded $NSLOTS -N $PREPROCESJOBID -terse -P megx.p -R y -m sa -M $mt_admin_mail \
 "${preprocess}" "${SAMPLE_LABEL}" 
 
 if [[ $? -ne "0" ]]; then
