@@ -176,13 +176,13 @@ fi
 ###########################################################################################################
 
 printf "Validating file..."
-${fasta_file_check} "${PROCESS_FASTA}" "${FASTA_BAD}"
+${fasta_file_check} "${RAW_FASTA}" "${FASTA_BAD}"
 FASTA_ERROR_CODE="$?"
 
 if [[ "${FASTA_ERROR_CODE}" -ne "0" ]]; then
   FASTA_BAD_HEADER=$(grep '>' "${FASTA_BAD}" | tr -d '>'); 
   
-  email_comm "${MG_URL} is not a valid FASTA file. FASTA validation failed at sequence ${FASTA_BAD_HEADER}, error: ${FASTA_ERROR_CODE}. See ${FASTA_BAD}. ${fasta_file_check} ${PROCESS_FASTA} ${FASTA_BAD}"
+  email_comm "${MG_URL} is not a valid FASTA file. FASTA validation failed at sequence ${FASTA_BAD_HEADER}, error: ${FASTA_ERROR_CODE}. See ${FASTA_BAD}. ${fasta_file_check} ${RAW_FASTA} ${FASTA_BAD}"
   db_error_comm  "${MG_URL} is not a valid FASTA file. Sequence validation failed. Error: ${FASTA_ERROR_CODE}. See ${FASTA_BAD}"
   
   exit 1
@@ -247,12 +247,12 @@ fi
 
 #printf "Removing duplicated sequences..."
 #qsub  -l h="mg9.mpi-bremen.de|mg10.mpi-bremen.de|mg11.mpi-bremen.de|mg12.mpi-bremen.de|mg13.mpi-bremen.de|mg14.mpi-bremen.de|mg15.mpi-bremen.de|mg16.mpi-bremen.de,exclusive" \
-#-sync y -pe threaded $NSLOTS  "${cd_hit_dup_runner}" "${PROCESS_FASTA}" "${UNIQUE}" "${UNIQUE_LOG}"
+#-sync y -pe threaded $NSLOTS  "${cd_hit_dup_runner}" "${RAW_FASTA}" "${UNIQUE}" "${UNIQUE_LOG}"
 
 #CD_HIT_ERROR_CODE="$?"
 
 #if [[ "${CD_HIT_ERROR_CODE}" -ne "0" ]]; then 
-#  email_comm "${cd_hit_dup} -i ${PROCESS_FASTA} -o /dev/null > ${UNIQUE_LOG}
+#  email_comm "${cd_hit_dup} -i ${RAW_FASTA} -o /dev/null > ${UNIQUE_LOG}
 #exited with RC ${CD_HIT_ERROR_CODE} in job ${JOB_ID}\nFiles are at: ${FAILED_JOBS_DIR}/job-${JOB_ID}"
 #  db_error_comm "${MG_URL} could not be processed by cd-hit-dup"
 #  exit 2;
@@ -277,10 +277,10 @@ fi
 printf "Calculating sequence statistics..."
 
 # infoseq
-infoseq "${PROCESS_FASTA}" -only -pgc -length -noheading -auto > "${INFOSEQ_TMPFILE}"
+infoseq "${RAW_FASTA}" -only -pgc -length -noheading -auto > "${INFOSEQ_TMPFILE}"
 
 if [[ "$?" -ne "0" ]]; then  
-  email_comm "infoseq ${PROCESS_FASTA} -only -pgc -length -noheading -auto > ${INFOSEQ_TMPFILE}
+  email_comm "infoseq ${RAW_FASTA} -only -pgc -length -noheading -auto > ${INFOSEQ_TMPFILE}
 exited with RC $? in job ${JOB_ID} Files are at: ${FAILED_JOBS_DIR}/job-${JOB_ID}"
   db_error_comm "Cannot calculate sequence statistics. Please contact adminitrator."
   exit 2; 
@@ -339,7 +339,7 @@ echo SAMPLE_LABEL=$SAMPLE_LABEL >> 01-environment
 echo MG_ID=$MG_ID >> 01-environment
 echo NSLOTS=$NSLOTS >> 01-environment
 
-echo PROCESS_FASTA=$PROCESS_FASTA >> 01-environment
+echo RAW_FASTA=$RAW_FASTA >> 01-environment
 echo GC=$GC >> 01-environment
 echo VARGC=$VARGC >> 01-environment
 echo NUM_BASES=$NUM_BASES >> 01-environment
@@ -359,7 +359,7 @@ echo FINISHED_JOBS_DIR=$FINISHED_JOBS_DIR >> 01-environment
 ###########################################################################################################
 
 #Split original
-awk -vn="${NSEQ}" 'BEGIN {n_seq=0;partid=1;} /^>/ {if(n_seq%n==0){file=sprintf("05-part-%d.fasta",partid);partid++;} print >> file; n_seq++; next;} { print >> file; }' < "${PROCESS_FASTA}"
+awk -vn="${NSEQ}" 'BEGIN {n_seq=0;partid=1;} /^>/ {if(n_seq%n==0){file=sprintf("05-part-%d.fasta",partid);partid++;} print >> file; n_seq++; next;} { print >> file; }' < "${RAW_FASTA}"
 NFILES=$(ls -1 05-part*.fasta | wc -l)
 
 qsub  -t 1-"${NFILES}" -pe threaded "${NSLOTS}" -N "${FGS_JOBARRAYID}" ${fgs_runner}
@@ -380,7 +380,7 @@ fi
 
 #MEM=$(free -m | grep Mem | awk '{printf "%d",$2/3}')
 MEM=4000
-$sortmerna --reads "${PROCESS_FASTA}" -a ${NSLOTS} --ref \
+$sortmerna --reads "${RAW_FASTA}" -a ${NSLOTS} --ref \
 ${DB}/rRNA_databases/silva-bac-16s-id90.fasta,\
 ${DB}/index/silva-bac-16s-db:${DB}/rRNA_databases/silva-arc-16s-id95.fasta,\
 ${DB}/index/silva-arc-16s-db:${DB}/rRNA_databases/silva-euk-18s-id95.fasta,\
@@ -388,7 +388,7 @@ ${DB}/index/silva-euk-18s-db --blast 1 --fastx --aligned "${SORTMERNA_OUT}" -v -
 
 
 if [[ "${ERROR_SORTMERNA}" -ne "0" ]]; then
-  email_comm "${sortmerna} --reads ${PROCESS_FASTA} -a ${NSLOTS} --ref ${DB}/rRNA_databases/silva-bac-16s-id90.fasta ...
+  email_comm "${sortmerna} --reads ${RAW_FASTA} -a ${NSLOTS} --ref ${DB}/rRNA_databases/silva-bac-16s-id90.fasta ...
 exited with RC ${ERROR_SORTMERNA} in job ${JOB_ID}."
   db_error_comm "sortmerna failed. Please contact adminitrator"
   exit 2
