@@ -129,18 +129,17 @@ fi
 ###########################################################################################################
 # 3 - Download file from MG URL
 ###########################################################################################################
-# 
-# # validate MG URL 
-# echo "${MG_URL}"
-# REGEX='(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]'
-#   
-# if [[ ! ${MG_URL} =~ ${REGEX} ]]; then
-#   email_comm "Invalid URL ${MG_URL} output db: ${DB_COM} ${SAMPLE_LABEL}"
-#   db_error_comm "Not valid URL: ${MG_URL}";
-#   exit 1
-# fi 
-# 
-# 
+
+# validate MG URL 
+echo "${MG_URL}"
+REGEX='(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]'
+  
+if [[ ! ${MG_URL} =~ ${REGEX} ]]; then
+  email_comm "Invalid URL ${MG_URL} output db: ${DB_COM} ${SAMPLE_LABEL}"
+  db_error_comm "Not valid URL: ${MG_URL}";
+  exit 1
+fi 
+
 # #  CHANGE THIS FOR REAL DATA !!!!!!!!!!!!!!!!!!!
 # # check if it already exist on our DB                    
 # # URLDB=$(psql -t -U "${target_db_user}" -h "${target_db_host}" -p "${target_db_port}" -d "${target_db_name}" -c \
@@ -154,53 +153,26 @@ fi
 # 
 # 
 # # download MG_URL
-# printf "Downloading ${MG_URL} to ${RAW_DOWNLOAD}..."
-# curl -s "${MG_URL}" > "${RAW_DOWNLOAD}"
-# 
-# if [[ "$?" -ne "0" ]]; then 
-#   email_comm "Could not retrieve ${MG_URL}"
-#   db_error_comm  "Could not retrieve ${MG_URL}"
-#   exit 1
-# fi
-# 
-# # compress data
-# gunzip -qc "${RAW_DOWNLOAD}" > "${RAW_FASTA}"
-# if [[ "$?" -ne "0" ]]; then 
-#   echo "File was uncompressed"
-#   rm "${RAW_FASTA}"; mv "${RAW_DOWNLOAD}" "${RAW_FASTA}" # NEEDS REVIEW: TRAP AND DB COMMUNICATION?
-# fi
-#  
+printf "Downloading ${MG_URL} to ${RAW_DOWNLOAD}..."
+curl -s "${MG_URL}" > "${RAW_DOWNLOAD}"
 
-###########################################################################################################
-# 4 - Preprocess data
-###########################################################################################################
-
-echo PROCESS_FASTA="${PROCESS_FASTA}" > 00-environment
-echo SAMPLE_LABEL="${SAMPLE_LABEL}" >> 00-environment
-echo MG_ID="${MG_ID}" >>  00-environment
-echo NSLOTS="${NSLOTS}" >> 00-environment
-echo target_db_user="${target_db_user}" >> 00-environment
-echo target_db_host="${target_db_host}" >> 00-environment
-echo target_db_port="${target_db_port}" >> 00-environment
-echo target_db_name="${target_db_name}" >> 00-environment
-echo preprocess="${preprocess}" >> 00-environment
-echo cd_hit_dup_runner="${cd_hit_dup_runner}" >> 00-environment
-echo cd_hit_dup="${cd_hit_dup}" >> 00-environment
-echo pear="${pear}" >> 00-environment
-echo bbduk="${bbduk}" >> 00-environment
-
-qsub -sync y -pe threaded $NSLOTS -N $PREPROCESJOBID -terse -P megx.p -R y -m sa -M $mt_admin_mail \
-"${preprocess}" "${SAMPLE_LABEL}" 
-
-if [[ $? -ne "0" ]]; then
-  email_comm "failed preprocess ${preprocess}"
-  db_error_comm "failed preprocess ${preprocess}"
-  exit 2; 
+if [[ "$?" -ne "0" ]]; then 
+  email_comm "Could not retrieve ${MG_URL}"
+  db_error_comm  "Could not retrieve ${MG_URL}"
+  exit 1
 fi
 
+# compress data
+gunzip -qc "${RAW_DOWNLOAD}" > "${RAW_FASTA}"
+if [[ "$?" -ne "0" ]]; then 
+  echo "File was uncompressed"
+  rm "${RAW_FASTA}"; mv "${RAW_DOWNLOAD}" "${RAW_FASTA}" # NEEDS REVIEW: TRAP AND DB COMMUNICATION?
+fi
+ 
+
 
 ###########################################################################################################
-# 5 -  Validate file
+# 4 -  Validate file
 ###########################################################################################################
 
 printf "Validating file..."
@@ -218,7 +190,7 @@ fi
 
 
 ###########################################################################################################
-# 6 - Check for utilities and directories
+# 5 - Check for utilities and directories
 ###########################################################################################################
 
 ERROR_MESSAGE=$(\
@@ -234,7 +206,7 @@ if [[ -n "${ERROR_MESSAGE}" ]]; then
 fi
 
 ###########################################################################################################
-# 7 - Download data files from SVN
+# 6 - Download data files from SVN
 ###########################################################################################################
 
 # pfam downlaod
@@ -270,7 +242,7 @@ if [[ "$?" -ne "0" ]]; then
 fi
 
 ###########################################################################################################
-# 8 - Check for duplicates
+# 7 - Check for duplicates
 ###########################################################################################################
 
 #printf "Removing duplicated sequences..."
@@ -299,7 +271,7 @@ fi
 #fi
 
 ###########################################################################################################
-# 9 - Calculate sequence statistics
+# 8 - Calculate sequence statistics
 ###########################################################################################################
 
 printf "Calculating sequence statistics..."
