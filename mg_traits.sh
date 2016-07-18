@@ -146,7 +146,7 @@ fi
 
 # check if it already exist on our DB            
 
-if [[ "${SAMPLE_LABEL}" != "%test%" ]]; then
+if [[ "${SAMPLE_LABEL}" != "test_label" ]]; then
   URLDB=$(psql -t -U "${target_db_user}" -h "${target_db_host}" -p "${target_db_port}" -d "${target_db_name}" -c \
   "SELECT count(*) FROM mg_traits.mg_traits_jobs where mg_url = '${MG_URL}' AND sample_label NOT ILIKE '%test% AND return_code = 0'")
     
