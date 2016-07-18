@@ -262,7 +262,7 @@ fi
 #  cleanup && exit 2;
 #fi
 
-#NUM_READS=$(grep 'Total number of sequences:'  "${UNIQUE_LOG}" | awk '{print $(NF)}')
+NUM_READS=$(grep 'Total number of sequences:'  "${UNIQUE_LOG}" | awk '{print $(NF)}')
 #NUM_UNIQUE=$(grep 'Number of clusters found:'  "${UNIQUE_LOG}" | awk '{print $(NF)}')
 
 #echo "Number of sequences: ${NUM_READS}"
