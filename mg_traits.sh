@@ -367,6 +367,8 @@ echo FAILED_JOBS_DIR=$FAILED_JOBS_DIR >> 01-environment
 echo RUNNING_JOBS_DIR=$RUNNING_JOBS_DIR >> 01-environment
 echo FINISHED_JOBS_DIR=$FINISHED_JOBS_DIR >> 01-environment
 
+echo MG_URL=$MG_URL >> 01-environment
+
 ###########################################################################################################
 # 1 - run fgs
 ###########################################################################################################
