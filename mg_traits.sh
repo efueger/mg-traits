@@ -144,18 +144,17 @@ if [[ ! ${MG_URL} =~ ${REGEX} ]]; then
   cleanup && exit 1
 fi 
 
-# #  CHANGE THIS FOR REAL DATA !!!!!!!!!!!!!!!!!!!
-# # check if it already exist on our DB                    
-# # URLDB=$(psql -t -U "${target_db_user}" -h "${target_db_host}" -p "${target_db_port}" -d "${target_db_name}" -c \
-# # "SELECT count(*) FROM mg_traits.mg_traits_jobs where mg_url = '${MG_URL}' AND sample_label NOT ILIKE '%test% AND return_code = 0'")
-# #     
-# # if [[ "${URLDB}" -gt 1 ]]; then 
-# #   email_comm "The URL "${MG_URL}" has been already succesfully crunched. If the file is different please change the file name"
-# #   db_error_comm "The URL ${MG_URL} has been already succesfully crunched. If the file is different please change the file name."
-# #   cleanup && exit 1
-# # fi
-# 
-# 
+# check if it already exist on our DB                    
+URLDB=$(psql -t -U "${target_db_user}" -h "${target_db_host}" -p "${target_db_port}" -d "${target_db_name}" -c \
+"SELECT count(*) FROM mg_traits.mg_traits_jobs where mg_url = '${MG_URL}' AND sample_label NOT ILIKE '%test% AND return_code = 0'")
+    
+if [[ "${URLDB}" -gt 1 ]]; then 
+  email_comm "The URL "${MG_URL}" has been already succesfully crunched. If the file is different please change the file name"
+  db_error_comm "The URL ${MG_URL} has been already succesfully crunched. If the file is different please change the file name."
+  cleanup && exit 1
+fi
+
+
 # # download MG_URL
 printf "Downloading ${MG_URL} to ${RAW_DOWNLOAD}..."
 curl -s "${MG_URL}" > "${RAW_DOWNLOAD}"
@@ -262,7 +261,14 @@ fi
 #  cleanup && exit 2;
 #fi
 
-NUM_READS=$(grep 'Total number of sequences:'  "${UNIQUE_LOG}" | awk '{print $(NF)}')
+#### ONLY FOR TARA!!!! ######
+MG_URL_LOG=$( echo "${MG_URL}" | sed '/pre-process.SR_rmadapt_nodup.fasta/pre-process.SR_rmadapt_comb_nodup.log/')
+curl -s "${MG_URL_LOG}" > pre-process.SR_rmadapt_comb_nodup.log
+NUM_READS=$( sed -n 3p pre-process.SR_rmadapt_comb_nodup.log | cut -f10 -d" " )
+#### ONLY FOR TARA!!!! ######
+
+
+#NUM_READS=$(grep 'Total number of sequences:'  "${UNIQUE_LOG}" | awk '{print $(NF)}')
 #NUM_UNIQUE=$(grep 'Number of clusters found:'  "${UNIQUE_LOG}" | awk '{print $(NF)}')
 
 #echo "Number of sequences: ${NUM_READS}"
