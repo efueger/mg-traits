@@ -265,7 +265,7 @@ fi
 #fi
 
 #### ONLY FOR TARA!!!! ######
-MG_URL_LOG=$( echo "${MG_URL}" | sed '/pre-process.SR_rmadapt_nodup.fasta/pre-process.SR_rmadapt_comb_nodup.log/')
+MG_URL_LOG=$( echo "${MG_URL}" | sed 's/pre-process.SR_rmadapt_nodup.fasta/pre-process.SR_rmadapt_comb_nodup.log/')
 curl -s "${MG_URL_LOG}" > pre-process.SR_rmadapt_comb_nodup.log
 NUM_READS=$( sed -n 3p pre-process.SR_rmadapt_comb_nodup.log | cut -f10 -d" " )
 #### ONLY FOR TARA!!!! ######
