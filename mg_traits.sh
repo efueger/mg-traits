@@ -97,12 +97,12 @@ DB_RESULT=$( echo "UPDATE mg_traits.mg_traits_jobs SET time_started = now(), job
 
 if [[ "$?" -ne "0" ]]; then
   email_comm "Cannot connect to database. Output:${DB_RESULT}"
-  exit 2
+  cleanup && exit 2
 fi
 
 if [[ "${DB_RESULT}" != "UPDATE 1" ]]; then
   email_comm "sample name ${SAMPLE_LABEL} is not in database Result:${DB_RESULT}"  
-  exit 2
+  cleanup && exit 2
 fi
 
 ###########################################################################################################
@@ -127,7 +127,7 @@ if [[ "$(pwd)" != "${THIS_JOB_TMP_DIR}" ]]; then
  email_comm  "Could not access job temp dir ${THIS_JOB_TMP_DIR} in $(pwd)"
  db_error_comm "Could not access job temp dir ${THIS_JOB_TMP_DIR}"
  
- exit 2; 
+ cleanup && exit 2; 
 fi
 
 ###########################################################################################################
@@ -141,7 +141,7 @@ REGEX='(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]
 if [[ ! ${MG_URL} =~ ${REGEX} ]]; then
   email_comm "Invalid URL ${MG_URL} output db: ${DB_COM} ${SAMPLE_LABEL}"
   db_error_comm "Not valid URL: ${MG_URL}";
-  exit 1
+  cleanup && exit 1
 fi 
 
 # #  CHANGE THIS FOR REAL DATA !!!!!!!!!!!!!!!!!!!
@@ -152,7 +152,7 @@ fi
 # # if [[ "${URLDB}" -gt 1 ]]; then 
 # #   email_comm "The URL "${MG_URL}" has been already succesfully crunched. If the file is different please change the file name"
 # #   db_error_comm "The URL ${MG_URL} has been already succesfully crunched. If the file is different please change the file name."
-# #   exit 1
+# #   cleanup && exit 1
 # # fi
 # 
 # 
@@ -163,7 +163,7 @@ curl -s "${MG_URL}" > "${RAW_DOWNLOAD}"
 if [[ "$?" -ne "0" ]]; then 
   email_comm "Could not retrieve ${MG_URL}"
   db_error_comm  "Could not retrieve ${MG_URL}"
-  exit 1
+  cleanup && exit 1
 fi
 
 # compress data
@@ -189,7 +189,7 @@ if [[ "${FASTA_ERROR_CODE}" -ne "0" ]]; then
   email_comm "${MG_URL} is not a valid FASTA file. FASTA validation failed at sequence ${FASTA_BAD_HEADER}, error: ${FASTA_ERROR_CODE}. See ${FASTA_BAD}. ${fasta_file_check} ${RAW_FASTA} ${FASTA_BAD}"
   db_error_comm  "${MG_URL} is not a valid FASTA file. Sequence validation failed. Error: ${FASTA_ERROR_CODE}. See ${FASTA_BAD}"
   
-  exit 1
+  cleanup && exit 1
 fi
 
 
@@ -206,7 +206,7 @@ check_required_programs "${cd_hit_dup}" "${cd_hit_est}" "${cd_hit_mms}" "${uproc
 if [[ -n "${ERROR_MESSAGE}" ]]; then
   email_comm "Not found ${ERROR_MESSAGE}"
   db_error_comm "Not found ${ERROR_MESSAGE}"
-  exit 2; 
+  cleanup && exit 2; 
 fi
 
 ###########################################################################################################
@@ -220,7 +220,7 @@ curl -s "${PFAM_ACCESSIONS_URL}" > "${PFAM_ACCESSIONS}"
 if [[ "$?" -ne "0" ]]; then
   email_comm "Could not retrieve ${PFAM_ACCESSIONS_URL} $http_proxy ${PFAM_ACCESSIONS}"
   db_error_comm "Could not retrieve ${PFAM_ACCESSIONS_URL}"
-  exit 1; 
+  cleanup && exit 1; 
 fi
 
 
@@ -231,7 +231,7 @@ curl -s "${TFFILE_URL}" > "${TFFILE}"
 if [[ "$?" -ne "0" ]]; then 
   email_comm "Could not retrieve ${TFFILE_URL}"
   db_error_comm "Could not retrieve ${TFFILE_URL}"
-  exit 1;
+  cleanup && exit 1;
 fi
   
 
@@ -242,7 +242,7 @@ curl -s "${SLV_TAX_URL}" > "${SLV_FILE}"
 if [[ "$?" -ne "0" ]]; then 
   email_comm "Could not retrieve ${SLV_TAX_URL}"
   db_error_comm "Could not retrieve ${SLV_TAX_URL}"
-  exit 1; 
+  cleanup && exit 1; 
 fi
 
 ###########################################################################################################
@@ -259,7 +259,7 @@ fi
 #  email_comm "${cd_hit_dup} -i ${RAW_FASTA} -o /dev/null > ${UNIQUE_LOG}
 #exited with RC ${CD_HIT_ERROR_CODE} in job ${JOB_ID}\nFiles are at: ${FAILED_JOBS_DIR}/job-${JOB_ID}"
 #  db_error_comm "${MG_URL} could not be processed by cd-hit-dup"
-#  exit 2;
+#  cleanup && exit 2;
 #fi
 
 #NUM_READS=$(grep 'Total number of sequences:'  "${UNIQUE_LOG}" | awk '{print $(NF)}')
@@ -271,7 +271,7 @@ fi
 #if [[ "$NUM_READS" -ne "$NUM_UNIQUE" ]]; then 
 #  email_comm "${MG_URL} contains duplicates. Please provide a pre-processed metagenome."
 #  db_error_comm "${MG_URL} contains duplicates"
-#  exit 1; 
+#  cleanup && exit 1; 
 #fi
 
 ###########################################################################################################
@@ -287,7 +287,7 @@ if [[ "$?" -ne "0" ]]; then
   email_comm "infoseq ${RAW_FASTA} -only -pgc -length -noheading -auto > ${INFOSEQ_TMPFILE}
 exited with RC $? in job ${JOB_ID} Files are at: ${FAILED_JOBS_DIR}/job-${JOB_ID}"
   db_error_comm "Cannot calculate sequence statistics. Please contact adminitrator."
-  exit 2; 
+  cleanup && exit 2; 
 fi
 
 
@@ -299,7 +299,7 @@ if [[ "${SEQ_STATS_ERROR_CODE}" -ne "0" ]]; then
   email_comm "Rscript --vanilla ${seq_stats} ${INFOSEQ_TMPFILE} ${INFOSEQ_MGSTATS}
 exited with RC ${SEQ_STATS_ERROR_CODE} in job ${JOB_ID}. Infoseq script. Files are at: ${FAILED_JOBS_DIR}/job-${JOB_ID}"
   db_error_comm "Cannot process sequence statistics. Please contact adminitrator."
-  exit 2; 
+  cleanup && exit 2; 
 fi
 
 NUM_BASES=$(cut -f1 "${INFOSEQ_MGSTATS}" -d ' '); 
@@ -375,7 +375,7 @@ if [[ "${ERROR_FGS}" -ne "0" ]]; then
   email_comm  "${frag_gene_scan} -genome=${IN_FASTA_FILE} -out=${IN_FASTA_FILE}.genes10 -complete=0 -train=sanger_10
 exited with RC ${ERROR_FGS} in job ${JOB_ID}"
   db_error_comm "FragGeneScan failed. Please contact adminitrator."
-  exit 2
+  cleanup && exit 2
 fi
 
 # ###########################################################################################################
@@ -395,7 +395,7 @@ if [[ "${ERROR_SORTMERNA}" -ne "0" ]]; then
   email_comm "${sortmerna} --reads ${RAW_FASTA} -a ${NSLOTS} --ref ${DB}/rRNA_databases/silva-bac-16s-id90.fasta ...
 exited with RC ${ERROR_SORTMERNA} in job ${JOB_ID}."
   db_error_comm "sortmerna failed. Please contact adminitrator"
-  exit 2
+  cleanup && exit 2
 fi
 
 NUM_RNA=$(egrep -c ">" "${SORTMERNA_OUT}".fasta)
@@ -403,7 +403,7 @@ NUM_RNA=$(egrep -c ">" "${SORTMERNA_OUT}".fasta)
 if [[ "${NUM_RNA}" -eq 0 ]]; then
   email_comm "not RNA sequence found by sortmerna"
   db_error_comm "no RNA sequence found by sortmerna"
-  exit 2
+  cleanup && exit 2
 fi  
 
 
@@ -423,7 +423,7 @@ if [[ "${ERROR_SINA}" -ne "0" ]]; then
   email_comm "${sina} -i ${RES}/split_smr/spout_\${SGE_TASK_ID} -o ${RES}/split_smr/\${SGE_TASK_ID}.16S.align.fasta ...
 exited with RC ${ERROR_SINA} in job ${JOB_ID}."
   db_error_comm "sina failed. Please contact adminitrator"
-  exit 2
+  cleanup && exit 2
 fi
 
 ###########################################################################################################
