@@ -148,13 +148,13 @@ fi
 
 if [[ "${SAMPLE_LABEL}" != "test_label" ]]; then
   URLDB=$(psql -t -U "${target_db_user}" -h "${target_db_host}" -p "${target_db_port}" -d "${target_db_name}" -c \
-  "SELECT count(*) FROM mg_traits.mg_traits_jobs where mg_url = '${MG_URL}' AND sample_label NOT ILIKE '%test% AND return_code = 0'")
+  "SELECT count(*) FROM mg_traits.mg_traits_jobs where mg_url = '${MG_URL}' AND sample_label NOT ILIKE 'test_label AND return_code = 0'")
     
-  if [[ "${URLDB}" -gt 1 ]]; then 
-    email_comm "The URL "${MG_URL}" has been already succesfully crunched. If the file is different please change the file name"
-    db_error_comm "The URL ${MG_URL} has been already succesfully crunched. If the file is different please change the file name."
-    cleanup && exit 1
-  fi
+#   if [[ "${URLDB}" -gt 1 ]]; then 
+#     email_comm "The URL "${MG_URL}" has been already succesfully crunched. If the file is different please change the file name"
+#     db_error_comm "The URL ${MG_URL} has been already succesfully crunched. If the file is different please change the file name."
+#     cleanup && exit 1
+#   fi
   
 fi
 
