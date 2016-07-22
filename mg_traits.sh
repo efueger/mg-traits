@@ -111,10 +111,10 @@ fi
 
 echo "This job tmp dir: ${THIS_JOB_TMP_DIR}"; 
 
-# rm -r ${THIS_JOB_TMP_DIR}  # CHANGE THIS FOR REAL DATA!!!!!!!!!! 
-# qdel -u megxnet  # CHANGE THIS FOR REAL DATA!!!!!!!!!! 
-# echo "UPDATE mg_tratis.mg_traits_jobs  SET return_code = 130 WHERE return_code = -1;" \
-# | psql -U "${target_db_user}" -h "${target_db_host}" -p "${target_db_port}" -d "${target_db_name}
+rm -r ${THIS_JOB_TMP_DIR}  # CHANGE THIS FOR REAL DATA!!!!!!!!!! 
+ qdel -u megxnet  # CHANGE THIS FOR REAL DATA!!!!!!!!!! 
+ echo "UPDATE mg_tratis.mg_traits_jobs  SET return_code = 130 WHERE return_code = -1;" \
+ | psql -U "${target_db_user}" -h "${target_db_host}" -p "${target_db_port}" -d "${target_db_name}"
 
 # rm -r /bioinf/projects/megx/scratch/mg-traits/running_jobs/job-83*  # CHANGE THIS FOR REAL DATA
 
