@@ -256,8 +256,8 @@ fi
 
 #VSEARCH_ERROR_CODE="$?"
 
-rm -r /bioinf/projects/megx/scratch/mg-traits/failed_jobs/job*
-rm -r /bioinf/projects/megx/scratch/mg-traits/running_jobs/job*
+#rm -r /bioinf/projects/megx/scratch/mg-traits/failed_jobs/job*
+#rm -r /bioinf/projects/megx/scratch/mg-traits/running_jobs/job*
 
 #if [[ "${CD_HIT_ERROR_CODE}" -ne "0" ]]; then 
 #  email_comm "${cd_hit_dup} -i ${RAW_FASTA} -o /dev/null > ${UNIQUE_LOG}
