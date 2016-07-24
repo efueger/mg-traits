@@ -256,6 +256,9 @@ fi
 
 #VSEARCH_ERROR_CODE="$?"
 
+rm -r /bioinf/projects/megx/scratch/mg-traits/failed_jobs/job*
+rm -r /bioinf/projects/megx/scratch/mg-traits/running_jobs/job*
+
 #if [[ "${CD_HIT_ERROR_CODE}" -ne "0" ]]; then 
 #  email_comm "${cd_hit_dup} -i ${RAW_FASTA} -o /dev/null > ${UNIQUE_LOG}
 #exited with RC ${CD_HIT_ERROR_CODE} in job ${JOB_ID}\nFiles are at: ${FAILED_JOBS_DIR}/job-${JOB_ID}"
@@ -430,7 +433,7 @@ qsub -pe threaded ${NSLOTS} -t 1-${nFILES} -N ${SINA_JOBARRAYID} ${sina_runner}
 ERROR_SINA=$?
 
 if [[ "${ERROR_SINA}" -ne "0" ]]; then
-  email_comm "${sina} -i ${RES}/split_smr/spout_\${SGE_TASK_ID} -o ${RES}/split_smr/\${SGE_TASK_ID}.16S.align.fasta ...
+  email_comm "qsub -pe threaded ${NSLOTS} -t 1-${nFILES} -N ${SINA_JOBARRAYID} ${sina_runner} failed
 exited with RC ${ERROR_SINA} in job ${JOB_ID}."
   db_error_comm "sina failed. Please contact adminitrator"
   cleanup && exit 2
