@@ -2,3 +2,5 @@ engines:
   shellcheck:
     enabled: true
     
+ratings:
+- *.sh
