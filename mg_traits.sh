@@ -2,28 +2,12 @@
 set -x
 set -o pipefail
 
-START_TIME=`date +%s.%N`
+START_TIME=$(date +%s.%N)
 
 echo "Environment variables:"
 
 source ~/.bashrc
 source /bioinf/projects/megx/mg-traits/resources/config_files/config.bash
-source /bioinf/projects/megx/mg-traits/resources/config_files/config.proxy
-
-echo -e "\tJob ID: ${JOB_ID}"
-echo -e "\tTarget database: ${target_db_user}@${target_db_host}:${target_db_port}/${target_db_name}"
-echo -e "\tCD-HIT-DUP: ${cd_hit_dup}"
-echo -e "\tCD-HIT-EST: ${cd_hit_est}"
-echo -e "\tCD-HIT-MMS: ${cd_hit_mms}"
-echo -e "\tFragGeneScan: ${frag_gene_scan}"
-echo -e "\tUPro: ${upro}"
-echo -e "\tR: ${r_interpreter}"
-echo -e "\tTemp dir: ${temp_dir}"
-echo -e "\tMG traits dir: ${mg_traits_dir}"
-echo -e "\tJob out dir: ${job_out_dir}"
-echo -e "\tMT admin mail: ${mt_admin_mail}"
-
-
 
 ###########################################################################################################
 # 0 - Parse parameters
@@ -43,35 +27,35 @@ value=${pair#*=}
 
 printf "\t${key}=${value}\n";
 
-if [ "${key}" = "sample_label" ]; then
+if [[ "${key}" = "sample_label" ]]; then
 	SAMPLE_LABEL="${value}";
 fi
 
-if [ "${key}" = "mg_url" ]; then
+if [[ "${key}" = "mg_url" ]]; then
 	MG_URL="${value}";
 fi
 
-if [ "${key}" = "customer" ]; then
+if [[ "${key}" = "customer" ]]; then
 	CUSTOMER="${value}";
 fi
 
-if [ "${key}" = "sample_environment" ]; then
+if [[ "${key}" = "sample_environment" ]]; then
 	SAMPLE_ENVIRONMENT="${value}";
 fi
 
-if [ "${key}" = "time_submitted" ]; then
+if [[ "${key}" = "time_submitted" ]]; then
 	SUBMIT_TIME="${value}";
 fi
 
-if [ "${key}" = "make_public" ]; then
+if [[ "${key}" = "make_public" ]]; then
 	MAKE_PUBLIC="${value}";
 fi
 
-if [ "${key}" = "keep_data" ]; then
+if [[ "${key}" = "keep_data" ]]; then
 	KEEP_DATA="${value}";
 fi
 
-if [ "${key}" = "id" ]; then
+if [[ "${key}" = "id" ]]; then
 	MG_ID="${value}";
 fi
 
@@ -94,7 +78,6 @@ function db_error_comm() {
 DB_RESULT=$( echo "UPDATE mg_traits.mg_traits_jobs SET time_started = now(), job_id = ${JOB_ID}, cluster_node = '${HOSTNAME}' WHERE sample_label = '${SAMPLE_LABEL}' AND id = ${MG_ID};" \
 | psql -U "${target_db_user}" -h "${target_db_host}" -p "${target_db_port}" -d "${target_db_name}" )
 
-
 if [[ "$?" -ne "0" ]]; then
   email_comm "Cannot connect to database. Output:${DB_RESULT}"
   cleanup && exit 2
@@ -112,9 +95,9 @@ fi
 echo "This job tmp dir: ${THIS_JOB_TMP_DIR}"; 
 
 # rm -r ${THIS_JOB_TMP_DIR}  # CHANGE THIS FOR REAL DATA!!!!!!!!!! 
-qdel -u megxnet  # CHANGE THIS FOR REAL DATA!!!!!!!!!! 
-echo "UPDATE mg_tratis.mg_traits_jobs  SET return_code = 130 WHERE return_code = -1;" \
- | psql -U "${target_db_user}" -h "${target_db_host}" -p "${target_db_port}" -d "${target_db_name}"
+# qdel -u megxnet  # CHANGE THIS FOR REAL DATA!!!!!!!!!! 
+# echo "UPDATE mg_tratis.mg_traits_jobs  SET return_code = 130 WHERE return_code = -1;" \
+#  | psql -U "${target_db_user}" -h "${target_db_host}" -p "${target_db_port}" -d "${target_db_name}"
 
 # rm -r /bioinf/projects/megx/scratch/mg-traits/running_jobs/job-83*  # CHANGE THIS FOR REAL DATA
 
@@ -153,8 +136,7 @@ if [[ "${SAMPLE_LABEL}" != "test_label" ]]; then
      email_comm "The URL "${MG_URL}" has been already succesfully crunched. If the file is different please change the file name"
      db_error_comm "The URL ${MG_URL} has been already succesfully crunched. If the file is different please change the file name."
      cleanup && exit 1
-  fi
-  
+  fi 
 fi
 
 # # download MG_URL
@@ -192,7 +174,6 @@ if [[ "${FASTA_ERROR_CODE}" -ne "0" ]]; then
   
   cleanup && exit 1
 fi
-
 
 ###########################################################################################################
 # 5 - Check for utilities and directories
@@ -301,7 +282,6 @@ exited with RC $? in job ${JOB_ID} Files are at: ${FAILED_JOBS_DIR}/job-${JOB_ID
   cleanup && exit 2; 
 fi
 
-
 # seq stats
 Rscript --vanilla "${seq_stats}" "${INFOSEQ_TMPFILE}" "${INFOSEQ_MGSTATS}"
 SEQ_STATS_ERROR_CODE="$?"
@@ -323,53 +303,18 @@ printf "Number of bases: %d\nGC content: %f\nGC variance: %f\n" "${NUM_BASES}" "
 # define environment for sub jobs
 ###########################################################################################################
 
-echo frag_gene_scan=$frag_gene_scan > 01-environment
-echo sina=$sina >> 01-environment
-echo sina_arb_pt_server=$sina_arb_pt_server >> 01-environment
-echo sina_version=$sina_version >> 01-environment
-echo sina_seed=$sina_seed >> 01-environment
-echo sina_seed_version=$sina_seed_version >> 01-environment
-echo sina_ref=$sina_ref >> 01-environment
-echo sina_ref_version=$sina_ref_version >> 01-environment
-echo SINA_SOCKET=$SINA_SOCKET >> 01-environment
-
-echo uproc=$uproc >> 01-environment
-echo uproc_pfam=$uproc_pfam >> 01-environment
-echo uproc_model=$uproc_model >> 01-environment
-
-echo r_interpreter=$r_interpreter >> 01-environment
-
-echo target_db_host=$target_db_host >> 01-environment
-echo target_db_port=$target_db_port >> 01-environment
-echo target_db_user=$target_db_user >> 01-environment
-echo target_db_name=$target_db_name >> 01-environment
-echo mt_admin_mail=$mt_admin_mail >> 01-environment
-
-echo TFFILE=$TFFILE >> 01-environment
-echo PFAM_ACCESSIONS=$PFAM_ACCESSIONS >> 01-environment
-echo SLV_FILE=$SLV_FILE >> 01-environment
-
-echo JOB_ID=$JOB_ID >> 01-environment
-echo SAMPLE_LABEL=$SAMPLE_LABEL >> 01-environment
-echo MG_ID=$MG_ID >> 01-environment
-echo NSLOTS=$NSLOTS >> 01-environment
-
-echo RAW_FASTA=$RAW_FASTA >> 01-environment
-echo GC=$GC >> 01-environment
-echo VARGC=$VARGC >> 01-environment
-echo NUM_BASES=$NUM_BASES >> 01-environment
-echo NUM_READS=$NUM_READS >> 01-environment
-
-echo SINA_LOG_DIR=$SINA_LOG_DIR >> 01-environment
-echo ARBHOME=$ARBHOME >> 01-environment
-echo LD_LIBRARY_PATH=$LD_LIBRARY_PATH >> 01-environment
-echo temp_dir=$temp_dir >> 01-environment
-echo THIS_JOB_TMP_DIR=$THIS_JOB_TMP_DIR >> 01-environment
-echo FAILED_JOBS_DIR=$FAILED_JOBS_DIR >> 01-environment
-echo RUNNING_JOBS_DIR=$RUNNING_JOBS_DIR >> 01-environment
-echo FINISHED_JOBS_DIR=$FINISHED_JOBS_DIR >> 01-environment
-
-echo MG_URL=$MG_URL >> 01-environment
+cat > 01-job_env << EOF 
+JOB_ID="${JOB_ID}"
+SAMPLE_LABEL="${SAMPLE_LABEL}"
+MG_ID="${MG_ID}"
+RAW_FASTA="${RAW_FASTA}"
+GC="${GC}"
+VARGC="${VARGC}"
+NUM_BASES="${NUM_BASES}"
+NUM_READS="${NUM_READS}"
+RUNNING_JOBS_DIR="${RUNNING_JOBS_DIR}"
+MG_URL="${MG_URL}"
+EOF
 
 ###########################################################################################################
 # 1 - run fgs
@@ -391,18 +336,17 @@ exited with RC ${ERROR_FGS} in job ${JOB_ID}"
   cleanup && exit 2
 fi
 
-# ###########################################################################################################
-# # 2 - run sortmerna
-# ###########################################################################################################
+############################################################################################################
+## 2 - run sortmerna
+############################################################################################################
 
 #MEM=$(free -m | grep Mem | awk '{printf "%d",$2/3}')
 MEM=4000
-$sortmerna --reads "${RAW_FASTA}" -a ${NSLOTS} --ref \
-${DB}/rRNA_databases/silva-bac-16s-id90.fasta,\
-${DB}/index/silva-bac-16s-db:${DB}/rRNA_databases/silva-arc-16s-id95.fasta,\
-${DB}/index/silva-arc-16s-db:${DB}/rRNA_databases/silva-euk-18s-id95.fasta,\
-${DB}/index/silva-euk-18s-db --blast 1 --fastx --aligned "${SORTMERNA_OUT}" -v --log -m ${MEM} --best 1 > sortmerna.log
-
+"${sortmerna}" --reads "${RAW_FASTA}" -a "${NSLOTS}" --ref \
+"${DB}"/rRNA_databases/silva-bac-16s-id90.fasta,\
+"${DB}"/index/silva-bac-16s-db:"${DB}"/rRNA_databases/silva-arc-16s-id95.fasta,\
+"${DB}"/index/silva-arc-16s-db:"${DB}"/rRNA_databases/silva-euk-18s-id95.fasta,\
+"${DB}"/index/silva-euk-18s-db --blast 1 --fastx --aligned "${SORTMERNA_OUT}" -v --log -m "${MEM}" --best 1 > sortmerna.log
 
 if [[ "${ERROR_SORTMERNA}" -ne "0" ]]; then
   email_comm "${sortmerna} --reads ${RAW_FASTA} -a ${NSLOTS} --ref ${DB}/rRNA_databases/silva-bac-16s-id90.fasta ...
@@ -413,7 +357,7 @@ fi
 
 NUM_RNA=$(egrep -c ">" "${SORTMERNA_OUT}".fasta)
 
-if [[ "${NUM_RNA}" -eq 0 ]]; then
+if [[ "${NUM_RNA}" -eq "0" ]]; then
   email_comm "not RNA sequence found by sortmerna"
   db_error_comm "no RNA sequence found by sortmerna"
   cleanup && exit 2
@@ -427,7 +371,7 @@ fi
 awk -vn="${nSEQ}" 'BEGIN {n_seq=0;partid=1;} /^>/ {if(n_seq%n==0){file=sprintf("06-part-%d.fasta",partid);partid++;} print >> file; n_seq++; next;} { print >> file; }' < "${SORTMERNA_OUT}".fasta
 nFILES=$(ls -1 06-part*.fasta | wc -l)
 
-qsub -pe threaded ${NSLOTS} -t 1-${nFILES} -N ${SINA_JOBARRAYID} ${sina_runner}
+qsub -pe threaded "${NSLOTS}" -t 1-"${nFILES}" -N "${SINA_JOBARRAYID}" "${sina_runner}"
 # "${sina_runner}" "${NSLOTS}" "${nFILES}" "${SINA_JOBARRAYID}"
 
 ERROR_SINA=$?
@@ -443,10 +387,10 @@ fi
 # 4 - run finish traits
 ###########################################################################################################
 
-qsub -sync y -pe threaded $NSLOTS -l h=\!mg32 -N $FINISHJOBID -o $THIS_JOB_TMP_DIR -e $THIS_JOB_TMP_DIR -l ga -j y -terse -P megx.p -R y -m sa -M $mt_admin_mail \
--hold_jid $FGS_JOBARRAYID,$SINA_JOBARRAYID  /bioinf/projects/megx/mg-traits/resources/bin/finish_runner.sh $THIS_JOB_TMP_DIR
+qsub -sync y -pe threaded "${NSLOTS}" -l h=\!mg32 -N "${FINISHJOBID}" -o "${THIS_JOB_TMP_DIR}" -e "${THIS_JOB_TMP_DIR}" -l ga -j y -terse -P megx.p -R y -m sa -M "${mt_admin_mail}" \
+-hold_jid "${FGS_JOBARRAYID}","${SINA_JOBARRAYID}"  /bioinf/projects/megx/mg-traits/resources/bin/finish_runner.sh "${THIS_JOB_TMP_DIR}"
 
-if [[ $? -ne 0 ]]; then
+if [[ "$?" -ne "0" ]]; then
   email_comm "qsub finish_runner.sh failed"
   db_error_comm "qsub finish_runner.sh failed"
 fi 
