@@ -92,7 +92,7 @@ fi
 # 2 - Create job directory
 ###########################################################################################################
 
-echo "This job tmp dir: ${THIS_JOB_TMP_DIR}"; 
+echo "This job tmp dir: ${THIS_JOB_TMP_DIR}";  
 
 # rm -r ${THIS_JOB_TMP_DIR}  # CHANGE THIS FOR REAL DATA!!!!!!!!!! 
 # qdel -u megxnet  # CHANGE THIS FOR REAL DATA!!!!!!!!!! 
