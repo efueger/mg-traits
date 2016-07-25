@@ -3,4 +3,5 @@ engines:
     enabled: true
     
 ratings:
-- "**.sh"
+  paths:
+  - "**.sh"
